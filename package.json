@@ -1,0 +1,22 @@
+{
+  "name": "inversify-binding-decorators",
+  "version": "1.0.0-alpha.0",
+  "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inversify/inversify-binding-decorators.git"
+  },
+  "keywords": [
+    "InversifyJS"
+  ],
+  "author": "Remo H. Jansen <remo.jansen@wolksoftware.com> (http://www.remojansen.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inversify/inversify-binding-decorators/issues"
+  },
+  "homepage": "https://github.com/inversify/inversify-binding-decorators#readme"
+}
