@@ -16,8 +16,6 @@ An utility that allows developers to declare [InversifyJS](http://inversify.io/)
 
 ![](http://i.imgur.com/UgPxGd4.png)
 
-**WIP! Sorry, it is too early to use this library. Please return soon, we are working hard to go live as soon as possible.**
-
 ### Installation
 You can install `inversify-binding-decorators` using npm:
 ```
