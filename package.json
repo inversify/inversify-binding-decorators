@@ -1,6 +1,6 @@
 {
   "name": "inversify-binding-decorators",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
   "main": "index.js",
   "scripts": {

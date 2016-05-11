@@ -1,6 +1,6 @@
 /// <reference path="../interfaces/interfaces.d.ts" />
 
-class ProvideInWhenOnSyntax<T> implements IProvideInSyntax<T>, IProvideWhenSyntax<T>, IProvideOnSyntax<T>  {
+class ProvideInWhenOnSyntax<T> implements IProvideInWhenOnSyntax<T>  {
 
     private _provideInSyntax: IProvideInSyntax<T>;
     private _provideWhenSyntax: IProvideWhenSyntax<T>;

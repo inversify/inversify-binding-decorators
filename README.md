@@ -82,7 +82,8 @@ class Shuriken implements IShuriken {
 ```
 
 ### Using classes, string literals & symbols as identifiers
-When you invoke @provide without any arguments:
+When you invoke `@provide` without any arguments:
+
 ```ts
 @provide()
 class Katana {
@@ -102,12 +103,16 @@ class Ninja {
     public fight() { return this._katana.hit(); };
 }
 ```
+
 A new binding is created under the hood:
+
 ```ts
 kernel.bind<Katana>(Katana).to(Katana);
-kernel.bind<Ninja >(Ninja ).to(Ninja );
+kernel.bind<Ninja>(Ninja).to(Ninja);
 ```
+
 These bindings use classes as identidiers but you can also use string literals as identifiers:
+
 ```ts
 let TYPE = {
     IKatana: "IKatana",
@@ -136,7 +141,9 @@ class Ninja implements INinja {
 
 }
 ```
+
 You can also use symbols as identifiers:
+
 ```ts
 let TYPE = {
     IKatana: Symbol("IKatana"),
@@ -165,6 +172,7 @@ class Ninja implements INinja {
 
 }
 ```
+
 ### Fluent binding decorator
 The basic `@provide` decorator doesn't allow you to declare contextual constraints, scope and other advanced binding features. However, `inversify-binding-decorators` includes a second decorator that allows you to achieve access the full potential of the fluent binding syntax:
 
@@ -215,6 +223,7 @@ class Ninja implements INinja {
 
 }
 ```
+
 One of the best things about the fluent decorator is that you can create aliases to fit your needs:
 
 ```ts
@@ -238,7 +247,9 @@ class Shuriken implements IWeapon {
     }
 }
 ```
+
 Another example:
+
 ```ts
 let provideSingleton = function(identifier) {
 	return provide(identifier)

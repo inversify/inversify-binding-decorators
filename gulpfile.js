@@ -29,7 +29,7 @@ gulp.task("lint", function() {
     return gulp.src([
         "src/**/**.ts",
         "test/**/**.test.ts",
-        "type_definitions/*.ts"
+        "type_definitions/inversify-binding-decorators/*.ts"
     ])
     .pipe(tslint())
     .pipe(tslint.report("verbose", config));
@@ -172,7 +172,7 @@ gulp.task("istanbul:hook", function() {
 
 gulp.task("cover", function() {
   if (!process.env.CI) return;
-  return gulp.src("coverage/**/lcov.info")
+  return gulp.src("coverage/lcov.info")
       .pipe(codecov());
 });
 
