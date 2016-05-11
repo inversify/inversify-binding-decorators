@@ -2,7 +2,7 @@
 
 import provide from "../decorator/provide";
 
-function makeProvideDecorator(kernel: inversify.IKernel) : (target: any) => any {
+function makeProvideDecorator(kernel: inversify.IKernel) {
     return provide(kernel);
 }
 

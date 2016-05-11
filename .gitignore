@@ -1,7 +1,6 @@
 # Logs
 logs
 *.log
-npm-debug.log*
 
 # Runtime data
 pids
@@ -17,19 +16,46 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
+.vscode/launch.json
+
 # node-waf configuration
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+build
 
 # Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+build
 node_modules
+bower_components
+docs
+bundled
+
 typings
+.typingsrc
+dist
+lib
+es
 
-# Optional npm cache directory
-.npm
+type_definitions/inversify/*.js
 
-# Optional REPL history
-.node_repl_history
+src/*.js
+src/**/*.js
+
+src/*.js.map
+src/**/*.js.map
+
+src/*.d.ts
+src/decorator/*.d.ts
+src/factory/*.d.ts
+src/syntax/*.d.ts
+
+test/*.js
+test/**/*.js
+
+type_definitions/**/*.js
+type_definitions/*.js
+
 .typingsrc
