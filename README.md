@@ -16,11 +16,24 @@ An utility that allows developers to declare [InversifyJS](http://inversify.io/)
 
 **WIP! Sorry, it is too early to use this library. Please return soon, we are working hard to go live as soon as possible.**
 
+### Installation
+You can install `inversify-binding-decorators` using npm:
+```
+$ npm install --save inversify inversify-binding-decorators reflect-metadata
+```
+If you are workiong with TypeScript you will need the following `.d.ts` files:
+```
+/// <reference path="node_modules/inversify/type_definitions/inversify/inversify.d.ts" />
+/// <reference path="node_modules/reflect-metadata/reflect-metadata.d.ts" />
+/// <reference path="node_modules/inversify-binding-decorators/type_definitions/inversify-binding-decorators.d.ts" />
+```
+
 ### The basics
 The [InversifyJS](http://inversify.io/) API allows us to delcare bindings using a fluent API: 
 
 ```ts
 import { injectable, Kernel } from "inversify";
+import "reflect-metadata";
 
 @injectable()
 class Katana implements IKatana {
@@ -46,6 +59,7 @@ This small utility allows you to declare bindings using decorators:
 ```ts
 import { injectable, Kernel } from "inversify";
 import makeProvideDecorator from "inversify-binding-decorators";
+import "reflect-metadata";
 
 var kernel = new Kernel();
 let provide = makeProvideDecorator(kernel);
@@ -239,3 +253,39 @@ class Shuriken implements IWeapon {
     }
 }
 ```
+
+### Support
+If you are experience any kind of issues we will be happy to help. You can report an issue using the
+[issues page](https://github.com/inversify/InversifyJS/issues) or the
+[chat](https://gitter.im/inversify/InversifyJS). You can also ask questions at
+[Stack overflow](http://stackoverflow.com/tags/inversifyjs) using the `inversifyjs` tag.
+
+If you want to share your thoughts with the development team or join us you will be able to do so using the
+[official the mailing list](https://groups.google.com/forum/#!forum/inversifyjs). You can check out the
+[wiki](https://github.com/inversify/InversifyJS/blob/master/wiki/readme.md) and browse the
+[documented source code](http://inversify.io/documentation/index.html) to learn more about InversifyJS internals.
+
+### Acknowledgements
+
+Thanks a lot to all the contributors, all the developers out there using InversifyJS and all those 
+that help us to spread the word by sharing content about InversifyJS online. Without your feedback 
+and support this project would not be possible.
+
+### License
+
+License under the MIT License (MIT)
+
+Copyright © 2016 [Remo H. Jansen](http://www.remojansen.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

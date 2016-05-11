@@ -78,6 +78,14 @@ describe("inversify-binding-decorators", () => {
         let kernel = new Kernel();
         let provide = makeFluentProvideDecorator(kernel);
 
+        let provideSingleton = function(identifier: string) {
+            return provide(identifier).inSingletonScope().done();
+        };
+
+        let provideTransient = function(identifier: string) {
+            return provide(identifier).done();
+        };
+
         interface INinja {
             fight(): string;
             sneak(): string;
@@ -97,21 +105,29 @@ describe("inversify-binding-decorators", () => {
             IShuriken: "IShuriken"
         };
 
-        @provide(TYPE.IKatana).inSingletonScope().done()
+        @provideSingleton(TYPE.IKatana)
         class Katana implements IKatana {
+            private _mark: any;
+            public constructor() {
+                this._mark = Math.random();
+            }
             public hit() {
-                return "cut! " + new Date();
+                return "cut! " + this._mark;
             }
         }
 
-        @provide(TYPE.IShuriken).done()
+        @provideTransient(TYPE.IShuriken)
         class Shuriken implements IShuriken {
+            private _mark: any;
+            public constructor() {
+                this._mark = Math.random();
+            }
             public throw() {
-                return "hit!";
+                return "hit! " + this._mark;
             }
         }
 
-        @provide(TYPE.INinja).done()
+        @provideTransient(TYPE.INinja)
         class Ninja implements INinja {
 
             private _katana: IKatana;
@@ -131,11 +147,12 @@ describe("inversify-binding-decorators", () => {
         }
 
         let ninja = kernel.get<INinja>(TYPE.INinja);
-        expect(ninja.fight().indexOf("cut!")).eql("");
-        expect(ninja.sneak()).eql("hit!");
+        expect(ninja.fight().indexOf("cut!")).eql(0);
+        expect(ninja.sneak().indexOf("hit!")).eql(0);
 
         let ninja2 = kernel.get<INinja>(TYPE.INinja);
         expect(ninja.fight()).eql(ninja2.fight());
+        expect(ninja.sneak()).not.to.eql(ninja2.sneak());
 
     });
 

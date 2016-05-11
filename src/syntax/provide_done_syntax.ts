@@ -11,7 +11,7 @@ class ProvideDoneSyntax<T> implements IProvideDoneSyntax<T> {
     }
 
     public done() {
-        return function(target: any) {
+        return (target: any) => {
             decorate(injectable(), target);
             this._binding.implementationType = target;
             return target;
