@@ -12,7 +12,9 @@
 [![NPM](https://nodei.co/npm/inversify-binding-decorators.png?downloads=true&downloadRank=true)](https://nodei.co/npm/inversify-binding-decorators/)
 [![NPM](https://nodei.co/npm-dl/inversify-binding-decorators.png?months=9&height=3)](https://nodei.co/npm/inversify-binding-decorators/)
 
-An utility that allows developers to declare [InversifyJS](http://inversify.io/) bindings using ES2016 decorators,
+An utility that allows developers to declare [InversifyJS](http://inversify.io/) bindings using ES2016 decorators:
+
+![](http://i.imgur.com/UgPxGd4.png)
 
 **WIP! Sorry, it is too early to use this library. Please return soon, we are working hard to go live as soon as possible.**
 
