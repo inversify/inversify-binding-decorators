@@ -3,10 +3,6 @@
 //******************************************************************************
 //* DEPENDENCIES
 //******************************************************************************
-
-// Enable ES6
-require("harmonize")();
-
 var gulp        = require("gulp"),
     browserify  = require("browserify"),
     tsify       = require("tsify"),
@@ -33,7 +29,7 @@ gulp.task("lint", function() {
     return gulp.src([
         "src/**/**.ts",
         "test/**/**.test.ts",
-        "type_definitions/inversify/*.ts"
+        "type_definitions/*.ts"
     ])
     .pipe(tslint())
     .pipe(tslint.report("verbose", config));
@@ -53,13 +49,13 @@ var pkg = require("./package.json");
 
 gulp.task("build-bundle-src", function() {
 
-  var mainTsFilePath = "src/inversify.ts";
+  var mainTsFilePath = "src/index.ts";
   var outputFolder   = "dist/";
-  var outputFileName = "inversify.js";
+  var outputFileName = "index.js";
 
   var bundler = browserify({
     debug: true,
-    standalone : "inversify"
+    standalone : "inversifyBindingDecorators"
   });
 
   // TS compiler options are in tsconfig.json file
@@ -76,13 +72,13 @@ gulp.task("build-bundle-src", function() {
 
 gulp.task("build-bundle-compress-src", function() {
 
-  var mainTsFilePath = "src/inversify.ts";
+  var mainTsFilePath = "src/index.ts";
   var outputFolder   = "dist/";
-  var outputFileName = "inversify.min.js";
+  var outputFileName = "index.min.js";
 
   var bundler = browserify({
     debug: true,
-    standalone : "inversify"
+    standalone : "inversifyBindingDecorators"
   });
 
   // TS compiler options are in tsconfig.json file

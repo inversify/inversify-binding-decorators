@@ -1,8 +1,9 @@
 /// <reference path="../src/interfaces/interfaces.d.ts" />
 
-import { Kernel, inject, traverseAncerstors, taggedConstraint, namedConstraint, typeConstraint } from "inversify";
+import { Kernel, inject } from "inversify";
 import { makeProvideDecorator, makeFluentProvideDecorator } from "../src/index";
 import { expect } from "chai";
+import "reflect-metadata";
 
 describe("inversify-binding-decorators", () => {
 
