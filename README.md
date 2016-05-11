@@ -64,14 +64,14 @@ import "reflect-metadata";
 var kernel = new Kernel();
 let provide = makeProvideDecorator(kernel);
 
-@provide()
+@provide(Katana)
 class Katana implements IKatana {
     public hit() {
         return "cut!";
     }
 }
 
-@provide()
+@provide(Shuriken)
 class Shuriken implements IShuriken {
     public throw() {
         return "hit!";
@@ -82,17 +82,17 @@ class Shuriken implements IShuriken {
 ```
 
 ### Using classes, string literals & symbols as identifiers
-When you invoke `@provide` without any arguments:
+When you invoke `@provide` using classes:
 
 ```ts
-@provide()
+@provide(Katana)
 class Katana {
     public hit() {
         return "cut!";
     }
 }
 
-@provide()
+@provide(Ninja)
 class Ninja {
     private _katana: Katana;
     public constructor(

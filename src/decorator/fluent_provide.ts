@@ -6,7 +6,9 @@ import ProvideOnSyntax from "../syntax/provide_on_syntax";
 import ProvideInSyntax from "../syntax/provide_in_syntax";
 
 function fluentProvide(kernel: inversify.IKernel) {
-  return function (serviceIdentifier: (string|Symbol|inversify.INewable<any>)) {
+
+  // function is named for testing
+  return function _fluentProvide(serviceIdentifier: (string|Symbol|inversify.INewable<any>)) {
 
     let bindingWhenOnSyntax = kernel.bind<any>(serviceIdentifier).to(null);
 

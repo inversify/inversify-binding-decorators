@@ -3,7 +3,9 @@
 import { decorate, injectable } from "inversify";
 
 function provide(kernel: inversify.IKernel) {
-  return function (serviceIdentifier: (string|Symbol|inversify.INewable<any>)) {
+
+  // function is named for testing
+  return function _provide(serviceIdentifier: (string|Symbol|inversify.INewable<any>)) {
     let bindingWhenOnSyntax = kernel.bind<any>(serviceIdentifier).to(null);
     return function (target: any) {
       decorate(injectable(), target);
