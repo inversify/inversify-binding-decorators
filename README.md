@@ -3,15 +3,14 @@
 [![Join the chat at https://gitter.im/inversify/InversifyJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/inversify/InversifyJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://secure.travis-ci.org/inversify/inversify-binding-decorators.svg?branch=master)](https://travis-ci.org/inversify/inversify-binding-decorators)
 [![codecov.io](https://codecov.io/github/inversify/inversify-binding-decorators/coverage.svg?branch=master)](https://codecov.io/github/inversify/inversify-binding-decorators?branch=master)
-[![npm version](https://badge.fury.io/js/inversify.svg)](http://badge.fury.io/js/inversify)
-[![Package Quality](http://npm.packagequality.com/shield/inversify.svg)](http://packagequality.com/#?package=inversify)
+[![npm version](https://badge.fury.io/js/inversify-binding-decorators.svg)](http://badge.fury.io/js/inversify)
 [![Dependencies](https://david-dm.org/inversify/inversify-binding-decorators.svg)](https://david-dm.org/inversify/inversify-binding-decorators#info=dependencies)
 [![img](https://david-dm.org/inversify/inversify-binding-decorators/dev-status.svg)](https://david-dm.org/inversify/inversify-binding-decorators/#info=devDependencies)
 [![img](https://david-dm.org/inversify/inversify-binding-decorators/peer-status.svg)](https://david-dm.org/inversify/inversify-binding-decorators/#info=peerDependenciess)
 [![Known Vulnerabilities](https://snyk.io/test/github/inversify/inversify-binding-decorators/badge.svg)](https://snyk.io/test/github/inversify/inversify-binding-decorators)
 
-[![NPM](https://nodei.co/npm/inversify.png?downloads=true&downloadRank=true)](https://nodei.co/npm/inversify-binding-decorators/)
-[![NPM](https://nodei.co/npm-dl/inversify.png?months=9&height=3)](https://nodei.co/npm/inversify-binding-decorators/)
+[![NPM](https://nodei.co/npm/inversify-binding-decorators.png?downloads=true&downloadRank=true)](https://nodei.co/npm/inversify-binding-decorators/)
+[![NPM](https://nodei.co/npm-dl/inversify-binding-decorators.png?months=9&height=3)](https://nodei.co/npm/inversify-binding-decorators/)
 
 An utility that allows developers to declare [InversifyJS](http://inversify.io/) bindings using ES2016 decorators,
 
