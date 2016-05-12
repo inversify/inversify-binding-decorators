@@ -2,7 +2,8 @@
   "name": "inversify-binding-decorators",
   "version": "1.0.0-alpha.2",
   "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
   "scripts": {
     "test": "gulp",
     "prepublish": "gulp build && gulp test"
