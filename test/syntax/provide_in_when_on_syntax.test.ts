@@ -52,13 +52,18 @@ describe("ProvideInWhenOnSyntax", () => {
 
     it("Should be able to access ProvideWhenSyntax", () => {
 
-        // TODO
+        let whenTargetNamedSpy = sandbox.spy(provideInWhenOnSyntax, "whenTargetNamed");
+        provideInWhenOnSyntax.whenTargetNamed("throwable");
+        expect(whenTargetNamedSpy.callCount).eq(1);
 
     });
 
     it("Should be able to access ProvideOnSyntax", () => {
 
-        // TODO
+        let onActivationSpy = sandbox.spy(provideOnSyntax, "onActivation");
+        let doneSpy = sandbox.spy(provideWhenSyntax, "done");
+        provideInWhenOnSyntax.onActivation((a: any) => { return a; });
+        expect(doneSpy.callCount).eq(1);
 
     });
 
