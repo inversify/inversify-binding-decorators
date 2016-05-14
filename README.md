@@ -80,6 +80,9 @@ class Shuriken implements IShuriken {
 
 ```
 
+A basic example can be found at the 
+[inversify-code-samples](https://github.com/inversify/inversify-code-samples/tree/master/inversify-binding-decorators) repository.
+
 ### Using classes, string literals & symbols as identifiers
 When you invoke `@provide` using classes:
 
@@ -262,6 +265,59 @@ class Shuriken implements IWeapon {
         return "hit!";
     }
 }
+```
+
+## The auto provice utility
+This library includes a small utility apply to add the default `@provide` decorator to all
+the public properties of a module:
+
+Consider the following example:
+```ts
+import * as entites from "../entities";
+
+let kernel = new Kernel();
+autoProvide(kernel, entites);
+let warrior = kernel.get(entites.Warrior);
+expect(warrior.fight()).eql("Using Katana...");
+```
+
+The contents of the entities.ts file are the following:
+```ts
+export { default as Warrior } from "./warrior";
+export { default as Katana } from "./katana";
+```
+The contents of the katana.ts file are the following:
+```ts
+class Katana {
+    public use() {
+        return "Using Katana...";
+    }
+}
+
+export default Katana;
+```
+The contents of the warrior.ts file are the following:
+```ts
+import Katana from "./katana";
+import { inject } from "inversify";
+
+class Warrior {
+    private _weapon: Katana;
+    public constructor(
+        // we need to declare binding because auto-provide uses
+        // @injectbale decorator at runtime not compilation time
+        // in the future maybe this limitation will desapear
+        // thanks to design-time decorators or some other TS feature
+        @inject(Katana) weapon: Katana
+    ) {
+        this._weapon = weapon;
+    }
+    public fight() {
+        return this._weapon.use();
+    }
+}
+
+export default Warrior;
 ```
 
 ### Support

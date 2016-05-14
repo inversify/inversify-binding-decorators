@@ -1,7 +1,7 @@
 /// <reference path="./inversify-binding-decorators.d.ts" />
 
 import { inject, Kernel } from "inversify";
-import { makeProvideDecorator, makeFluentProvideDecorator } from "inversify-binding-decorators";
+import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from "inversify-binding-decorators";
 
 module decorator {
     let kernel = new Kernel();
@@ -138,5 +138,22 @@ module fluent_decorator {
 
     let ninja = kernel.get<INinja>(TYPE.INinja);
     console.log(ninja);
+
+}
+
+module auto_provide {
+
+    let warriors = {
+        Ninja: class Ninja {},
+        Samurai: class Samurai {}
+    };
+
+    let weapons = {
+        Katana: class Katana {},
+        Shuriken: class Shuriken {},
+    };
+
+    let kernel = new Kernel();
+    autoProvide(kernel, warriors, weapons);
 
 }

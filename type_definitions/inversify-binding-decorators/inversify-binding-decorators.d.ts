@@ -1,4 +1,4 @@
-// Type definitions for inversify 1.0.0-alpha.2
+// Type definitions for inversify 1.0.0-beta.1
 // Project: https://github.com/inversify/inversify-binding-decorators
 // Definitions by: inversify <https://github.com/inversify/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
@@ -39,6 +39,8 @@ declare namespace inversifyBindingDecorators {
         whenAnyAncestorMatches(constraint: (request: inversify.IRequest) => boolean): IProvideOnSyntax<T>;
         whenNoAncestorMatches(constraint: (request: inversify.IRequest) => boolean): IProvideOnSyntax<T>;
     }
+
+    export function autoProvide(kernel: inversify.IKernel, ...modules: any[]): void;
 
     export function makeProvideDecorator(kernel: inversify.IKernel):
         (serviceIdentifier: (string|Symbol|inversify.INewable<any>)) => (target: any) => any;

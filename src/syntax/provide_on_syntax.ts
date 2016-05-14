@@ -1,25 +1,27 @@
 /// <reference path="../interfaces/interfaces.d.ts" />
 
 import ProvideWhenSyntax from "./provide_when_syntax";
-import ProvideDoneSyntax from "./provide_done_syntax";
 
 class ProvideOnSyntax<T> implements IProvideOnSyntax<T> {
 
     private _bindingOnSyntax: inversify.IBindingOnSyntax<T>;
+    private _provideDoneSyntax: IProvideDoneSyntax<T>;
 
-    public constructor(bindingOnSyntax: inversify.IBindingOnSyntax<T>) {
+    public constructor(
+        bindingOnSyntax: inversify.IBindingOnSyntax<T>,
+        provideDoneSyntax: IProvideDoneSyntax<T>
+    ) {
         this._bindingOnSyntax = bindingOnSyntax;
+        this._provideDoneSyntax = provideDoneSyntax;
     }
 
     public onActivation(fn: (context: inversify.IContext, injectable: T) => T): IProvideWhenSyntax<T> {
         let bindingWhenSyntax = this._bindingOnSyntax.onActivation(fn);
-        return new ProvideWhenSyntax(bindingWhenSyntax);
+        return new ProvideWhenSyntax(bindingWhenSyntax, this._provideDoneSyntax);
     }
 
     public done() {
-        let binding: inversify.IBinding<T> = (<any>this._bindingOnSyntax)._binding;
-        let provideDoneSyntax = new ProvideDoneSyntax<T>(binding);
-        return provideDoneSyntax.done();
+        return this._provideDoneSyntax.done();
     }
 
 }
