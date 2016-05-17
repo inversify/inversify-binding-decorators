@@ -1,4 +1,4 @@
-// Type definitions for inversify 1.0.0-beta.1
+// Type definitions for inversify 1.0.0-beta.2
 // Project: https://github.com/inversify/inversify-binding-decorators
 // Definitions by: inversify <https://github.com/inversify/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
