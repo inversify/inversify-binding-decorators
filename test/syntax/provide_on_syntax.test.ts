@@ -9,7 +9,7 @@ import * as sinon from "sinon";
 
 describe("ProvideOnSyntax", () => {
 
-    let sandbox: Sinon.SinonSandbox;
+    let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
         sandbox = sinon.sandbox.create();

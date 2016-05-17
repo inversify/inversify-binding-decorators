@@ -1,10 +1,12 @@
 {
   "name": "inversify-binding-decorators",
   "version": false,
-  "dependencies": {},
-  "ambientDependencies": {
-    "chai": "registry:dt/chai#3.4.0+20160317120654",
-    "mocha": "registry:dt/mocha#2.2.5+20160317120654",
-    "sinon": "registry:dt/sinon#1.16.0+20160317120654"
+  "dependencies": {
+    "chai": "registry:npm/chai#3.5.0+20160415060238",
+    "chalk": "registry:npm/chalk#1.0.0+20160211003958",
+    "sinon": "registry:npm/sinon#1.16.0+20160427193336"
+  },
+  "globalDependencies": {
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654"
   }
 }

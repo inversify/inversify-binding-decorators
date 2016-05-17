@@ -11,7 +11,7 @@ import "reflect-metadata";
 
 describe("ProvideWhenOnSyntax", () => {
 
-    let sandbox: Sinon.SinonSandbox;
+    let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
         sandbox = sinon.sandbox.create();

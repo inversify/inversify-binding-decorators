@@ -9,7 +9,7 @@ import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
 
 describe("ProvideInSyntax", () => {
 
-    let sandbox: Sinon.SinonSandbox;
+    let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
         sandbox = sinon.sandbox.create();
