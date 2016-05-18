@@ -1,9 +1,9 @@
-// Type definitions for inversify 1.0.0-beta.2
+// Type definitions for inversify 1.0.0-beta.3
 // Project: https://github.com/inversify/inversify-binding-decorators
 // Definitions by: inversify <https://github.com/inversify/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-/// <reference path="../inversify/inversify.d.ts" />
+/// <reference path="../node_modules/inversify/type_definitions/inversify/inversify.d.ts" />
 
 declare namespace inversifyBindingDecorators {
 

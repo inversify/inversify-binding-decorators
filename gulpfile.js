@@ -29,7 +29,7 @@ gulp.task("lint", function() {
     return gulp.src([
         "src/**/**.ts",
         "test/**/**.test.ts",
-        "type_definitions/inversify-binding-decorators/*.ts"
+        "type_definitions/*.ts"
     ])
     .pipe(tslint())
     .pipe(tslint.report("verbose", config));
@@ -186,7 +186,7 @@ gulp.task("test", function(cb) {
 var tsTypeDefinitionsProject = tsc.createProject("tsconfig.json");
 
 gulp.task("build-type-definitions", function() {
-  return gulp.src("type_definitions/**/*.ts")
+  return gulp.src("type_definitions/*.ts")
              .pipe(tsc(tsTypeDefinitionsProject))
              .on("error", function (err) {
                  process.exit(1);
