@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/inversify/inversify-binding-decorators#readme",
   "dependencies": {
-    "inversify": "^2.0.0-beta.4"
+    "inversify": "^2.0.0-beta.5",
+    "inversify-dts": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^13.0.1",
