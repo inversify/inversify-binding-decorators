@@ -19,8 +19,4 @@ wallaby.js
 .travis.yml
 .gitignore
 .vscode
-
-type_definitions/*-test.js
-type_definitions/*-test.ts
-type_definitions/*-tests.js
-type_definitions/*-tests.ts
+type_definitions
