@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import makeFluentProvideDecorator from "../../src/factory/fluent_provide_decorator_factory";
 import fluentProvide from "../../src/decorator/fluent_provide";
 import { Kernel } from "inversify";

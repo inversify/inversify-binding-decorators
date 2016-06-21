@@ -97,6 +97,9 @@ var tsLibProject = tsc.createProject("tsconfig.json", { module : "commonjs" });
 
 gulp.task("build-lib", function() {
     return gulp.src([
+        "node_modules/inversify-dts/inversify/inversify.d.ts",
+        "node_modules/reflect-metadata/reflect-metadata.d.ts",
+        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tsLibProject ))
@@ -112,6 +115,9 @@ var tsEsProject = tsc.createProject("tsconfig.json", { module : "es2015" });
 
 gulp.task("build-es", function() {
     return gulp.src([
+        "node_modules/inversify-dts/inversify/inversify.d.ts",
+        "node_modules/reflect-metadata/reflect-metadata.d.ts",
+        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tsEsProject))
@@ -130,6 +136,9 @@ var tstProject = tsc.createProject("tsconfig.json");
 
 gulp.task("build-src", function() {
     return gulp.src([
+        "node_modules/inversify-dts/inversify/inversify.d.ts",
+        "node_modules/reflect-metadata/reflect-metadata.d.ts",
+        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tstProject))
@@ -143,6 +152,9 @@ var tsTestProject = tsc.createProject("tsconfig.json");
 
 gulp.task("build-test", function() {
     return gulp.src([
+        "node_modules/inversify-dts/inversify/inversify.d.ts",
+        "node_modules/reflect-metadata/reflect-metadata.d.ts",
+        "typings/index.d.ts",
         "test/**/*.ts"
     ])
     .pipe(tsc(tsTestProject))

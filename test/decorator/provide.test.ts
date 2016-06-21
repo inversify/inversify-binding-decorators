@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import _provide from "../../src/decorator/provide";
 import { Kernel } from "inversify";
 import { expect } from "chai";

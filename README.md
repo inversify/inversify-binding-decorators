@@ -20,7 +20,8 @@ An utility that allows developers to declare [InversifyJS](http://inversify.io/)
 You can install `inversify-binding-decorators` using npm:
 
 ```
-$ npm install --save inversify inversify-binding-decorators reflect-metadata inversify-dts
+$ npm install --save inversify inversify-binding-decorators reflect-metadata
+$ npm install --save-dev inversify-dts
 ```
 
 If you are workiong with TypeScript you will need the following `.d.ts` files:

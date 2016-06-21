@@ -1,5 +1,3 @@
-/// <reference path="../src/interfaces/interfaces.d.ts" />
-
 import { Kernel, inject, tagged } from "inversify";
 import { makeProvideDecorator, makeFluentProvideDecorator } from "../src/index";
 import { expect } from "chai";

@@ -14,9 +14,10 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": false
     },
-    "exclude": [
-        "node_modules",
-        "type_definitions",
-        "typings"
+    "files": [
+        "node_modules/inversify-dts/inversify/inversify.d.ts",
+        "node_modules/reflect-metadata/reflect-metadata.d.ts",
+        "typings/index.d.ts",
+        "src/index.ts"
     ]
 }

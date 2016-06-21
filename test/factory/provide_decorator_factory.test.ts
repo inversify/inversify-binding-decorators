@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import makeProvideDecorator from "../../src/factory/provide_decorator_factory";
 import provide from "../../src/decorator/provide";
 import { Kernel } from "inversify";
