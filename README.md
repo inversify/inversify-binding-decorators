@@ -39,22 +39,22 @@ import { injectable, Kernel } from "inversify";
 import "reflect-metadata";
 
 @injectable()
-class Katana implements IKatana {
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
 @injectable()
-class Shuriken implements IShuriken {
+class Shuriken implements ThrowableWeapon {
     public throw() {
         return "hit!";
     }
 }
 
 var kernel = new Kernel();
-kernel.bind<IKatana>("IKatana").to(Katana);
-kernel.bind<IShuriken>("IShuriken").to(Shuriken);
+kernel.bind<Katana>("Katana").to(Katana);
+kernel.bind<Shuriken>("Shuriken").to(Shuriken);
 ```
 
 This small utility allows you to declare bindings using decorators:
@@ -68,14 +68,14 @@ var kernel = new Kernel();
 let provide = makeProvideDecorator(kernel);
 
 @provide(Katana)
-class Katana implements IKatana {
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
 @provide(Shuriken)
-class Shuriken implements IShuriken {
+class Shuriken implements ThrowableWeapon {
     public throw() {
         return "hit!";
     }
@@ -100,9 +100,9 @@ class Katana {
 
 @provide(Ninja)
 class Ninja {
-    private _katana: Katana;
+    private _katana: Weapon;
     public constructor(
-        katana: Katana
+        katana: Weapon
     ) {
         this._katana = katana;
     }
@@ -121,24 +121,24 @@ These bindings use classes as identidiers but you can also use string literals a
 
 ```ts
 let TYPE = {
-    IKatana: "IKatana",
-    INinja: "INinja"
+    IKatana: "Katana",
+    INinja: "Ninja"
 };
 
-@provide(TYPE.IKatana)
-class Katana implements IKatana {
+@provide(TYPE.Katana)
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
-@provide(TYPE.INinja)
-class Ninja implements INinja {
+@provide(TYPE.Ninja)
+class Ninja implements Ninja {
 
-    private _katana: IKatana;
+    private _katana: Weapon;
 
     public constructor(
-        @inject(TYPE.IKatana) katana: IKatana
+        @inject(TYPE.Katana) katana: Weapon
     ) {
         this._katana = katana;
     }
@@ -152,24 +152,24 @@ You can also use symbols as identifiers:
 
 ```ts
 let TYPE = {
-    IKatana: Symbol("IKatana"),
-    INinja: Symbol("INinja")
+    Katana: Symbol("Katana"),
+    Ninja: Symbol("Ninja")
 };
 
-@provide(TYPE.IKatana)
-class Katana implements IKatana {
+@provide(TYPE.Katana)
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
-@provide(TYPE.INinja)
-class Ninja implements INinja {
+@provide(TYPE.Ninja)
+class Ninja implements Ninja {
 
-    private _katana: IKatana;
+    private _katana: Weapon;
 
     public constructor(
-        @inject(TYPE.IKatana) katana: IKatana
+        @inject(TYPE.Katana) katana: Weapon
     ) {
         this._katana = katana;
     }
@@ -180,9 +180,13 @@ class Ninja implements INinja {
 ```
 
 ### Fluent binding decorator
-The basic `@provide` decorator doesn't allow you to declare contextual constraints, scope and other advanced binding features. However, `inversify-binding-decorators` includes a second decorator that allows you to achieve access the full potential of the fluent binding syntax:
+The basic `@provide` decorator doesn't allow you to declare contextual constraints, 
+scope and other advanced binding features. However, `inversify-binding-decorators` 
+includes a second decorator that allows you to achieve access the full potential 
+of the fluent binding syntax:
 
-The decorator returned by `makeProvideDecorator` is not fluent and is very limited when compared to `makeFluentProvideDecorator`:
+The decorator returned by `makeProvideDecorator` is not fluent and is very limited 
+when compared to `makeFluentProvideDecorator`:
 
 ```ts
 import { injectable, Kernel } from "inversify";
@@ -192,33 +196,33 @@ var kernel = new Kernel();
 let provide = makeFluentProvideDecorator(kernel);
 
 let TYPE = {
-    IWeapon : "IWeapon",
-    INinja: "INinja"
+    Weapon : "Weapon",
+    Ninja: "Ninja"
 };
 
-@provide(TYPE.IWeapon).whenTargetTagged("throwable", true).done();
-class Katana implements IWeapon {
+@provide(TYPE.Weapon).whenTargetTagged("throwable", true).done();
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
-@provide(TYPE.IWeapon).whenTargetTagged("throwable", false).done();
-class Shuriken implements IWeapon {
+@provide(TYPE.Weapon).whenTargetTagged("throwable", false).done();
+class Shuriken implements Weapon {
     public hit() {
         return "hit!";
     }
 }
 
-@provide(TYPE.INinja)
-class Ninja implements INinja {
+@provide(TYPE.Ninja)
+class Ninja implements Ninja {
 
-    private _katana: IWeapon;
-    private _shuriken: IWeapon;
+    private _katana: Weapon;
+    private _shuriken: Weapon;
 
     public constructor(
-        @inject(TYPE.IWeapon) @tagged("throwable", false) katana: IKatana,
-        @inject(TYPE.IWeapon) @tagged("throwable", true) shuriken: IShuriken
+        @inject(TYPE.Weapon) @tagged("throwable", false) katana: Weapon,
+        @inject(TYPE.Weapon) @tagged("throwable", true) shuriken: ThrowableWeapon
     ) {
         this._katana = katana;
         this._shuriken = shuriken;
@@ -239,15 +243,15 @@ let provideThrowable = function(identifier, isThrowable) {
 		      .done();
 };
 
-@provideThrowable(TYPE.IWeapon, true)
-class Katana implements IWeapon {
+@provideThrowable(TYPE.Weapon, true)
+class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
-@provideThrowable(TYPE.IWeapon, false)
-class Shuriken implements IWeapon {
+@provideThrowable(TYPE.Weapon, false)
+class Shuriken implements Weapon {
     public hit() {
         return "hit!";
     }
@@ -263,8 +267,8 @@ let provideSingleton = function(identifier) {
 		      .done();
 };
 
-@provideSingleton(TYPE.IWeapon)
-class Shuriken implements IWeapon {
+@provideSingleton(TYPE.Weapon)
+class Shuriken implements Weapon {
     public hit() {
         return "hit!";
     }
@@ -276,6 +280,7 @@ This library includes a small utility apply to add the default `@provide` decora
 the public properties of a module:
 
 Consider the following example:
+
 ```ts
 import * as entites from "../entities";
 
@@ -286,11 +291,14 @@ expect(warrior.fight()).eql("Using Katana...");
 ```
 
 The contents of the entities.ts file are the following:
+
 ```ts
 export { default as Warrior } from "./warrior";
 export { default as Katana } from "./katana";
 ```
+
 The contents of the katana.ts file are the following:
+
 ```ts
 class Katana {
     public use() {
@@ -300,19 +308,21 @@ class Katana {
 
 export default Katana;
 ```
+
 The contents of the warrior.ts file are the following:
+
 ```ts
 import Katana from "./katana";
 import { inject } from "inversify";
 
 class Warrior {
-    private _weapon: Katana;
+    private _weapon: Weapon;
     public constructor(
         // we need to declare binding because auto-provide uses
         // @injectbale decorator at runtime not compilation time
         // in the future maybe this limitation will desapear
         // thanks to design-time decorators or some other TS feature
-        @inject(Katana) weapon: Katana
+        @inject(Katana) weapon: Weapon
     ) {
         this._weapon = weapon;
     }
@@ -356,6 +366,11 @@ following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial
 portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+PURPOSE AND NONINFRINGEMENT. 
 
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
