@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import fluentProvide from "../../src/decorator/fluent_provide";
 import { Kernel } from "inversify";
 import { expect } from "chai";

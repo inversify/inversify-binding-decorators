@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import ProvideInSyntax from "../../src/syntax/provide_in_syntax";
 import { Kernel } from "inversify";
 import { expect } from "chai";
@@ -24,7 +22,7 @@ describe("ProvideInSyntax", () => {
         class Ninja {}
         let kernel = new Kernel();
         let bindingInSyntax = kernel.bind<Ninja>("Ninja").to(null);
-        let binding: inversify.IBinding<any> = (<any>bindingInSyntax)._binding;
+        let binding: inversify.interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let bindingInSyntaxSpy = sandbox.spy(bindingInSyntax, "inSingletonScope");
         let provideInSyntax = new ProvideInSyntax(bindingInSyntax, provideDoneSyntax);

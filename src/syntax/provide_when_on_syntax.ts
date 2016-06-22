@@ -1,75 +1,75 @@
-/// <reference path="../interfaces/interfaces.d.ts" />
+import interfaces from "../interfaces/interfaces";
 
-class ProvideWhenOnSyntax<T> implements IProvideWhenOnSyntax<T>  {
+class ProvideWhenOnSyntax<T> implements interfaces.ProvideWhenOnSyntax<T>  {
 
-    private _provideWhenSyntax: IProvideWhenSyntax<T>;
-    private _provideOnSyntax: IProvideOnSyntax<T>;
+    private _provideWhenSyntax: interfaces.ProvideWhenSyntax<T>;
+    private _provideOnSyntax: interfaces.ProvideOnSyntax<T>;
 
     public constructor(
-        provideWhenSyntax: IProvideWhenSyntax<T>,
-        provideOnSyntax: IProvideOnSyntax<T>
+        provideWhenSyntax: interfaces.ProvideWhenSyntax<T>,
+        provideOnSyntax: interfaces.ProvideOnSyntax<T>
     ) {
         this._provideWhenSyntax = provideWhenSyntax;
         this._provideOnSyntax = provideOnSyntax;
     }
 
-    public when(constraint: (request: inversify.IRequest) => boolean): IProvideOnSyntax<T> {
+    public when(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.when(constraint);
     }
 
-    public whenTargetNamed(name: string): IProvideOnSyntax<T> {
+    public whenTargetNamed(name: string): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenTargetNamed(name);
     }
 
-    public whenTargetTagged(tag: string, value: any): IProvideOnSyntax<T> {
+    public whenTargetTagged(tag: string, value: any): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenTargetTagged(tag, value);
     }
 
-    public whenInjectedInto(parent: (Function|string)): IProvideOnSyntax<T> {
+    public whenInjectedInto(parent: (Function|string)): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenInjectedInto(parent);
     }
 
-    public whenParentNamed(name: string): IProvideOnSyntax<T> {
+    public whenParentNamed(name: string): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenParentNamed(name);
     }
 
-    public whenParentTagged(tag: string, value: any): IProvideOnSyntax<T> {
+    public whenParentTagged(tag: string, value: any): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenParentTagged(tag, value);
     }
 
-    public whenAnyAncestorIs(ancestor: (Function|string)): IProvideOnSyntax<T> {
+    public whenAnyAncestorIs(ancestor: (Function|string)): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenAnyAncestorIs(ancestor);
     }
 
-    public whenNoAncestorIs(ancestor: (Function|string)): IProvideOnSyntax<T> {
+    public whenNoAncestorIs(ancestor: (Function|string)): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenNoAncestorIs(ancestor);
     }
 
-    public whenAnyAncestorNamed(name: string): IProvideOnSyntax<T> {
+    public whenAnyAncestorNamed(name: string): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenAnyAncestorNamed(name);
     }
 
-    public whenAnyAncestorTagged(tag: string, value: any): IProvideOnSyntax<T> {
+    public whenAnyAncestorTagged(tag: string, value: any): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenAnyAncestorTagged(tag, value);
     }
 
-    public whenNoAncestorNamed(name: string): IProvideOnSyntax<T> {
+    public whenNoAncestorNamed(name: string): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenNoAncestorNamed(name);
     }
 
-    public whenNoAncestorTagged(tag: string, value: any): IProvideOnSyntax<T> {
+    public whenNoAncestorTagged(tag: string, value: any): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenNoAncestorTagged(tag, value);
     }
 
-    public whenAnyAncestorMatches(constraint: (request: inversify.IRequest) => boolean): IProvideOnSyntax<T> {
+    public whenAnyAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenAnyAncestorMatches(constraint);
     }
 
-    public whenNoAncestorMatches(constraint: (request: inversify.IRequest) => boolean): IProvideOnSyntax<T> {
+    public whenNoAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenNoAncestorMatches(constraint);
     }
 
-    public onActivation(fn: (context: inversify.IContext, injectable: T) => T): IProvideWhenSyntax<T> {
+    public onActivation(fn: (context: inversify.interfaces.Context, injectable: T) => T): interfaces.ProvideWhenSyntax<T> {
         return this._provideOnSyntax.onActivation(fn);
     }
 

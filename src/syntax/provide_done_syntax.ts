@@ -1,12 +1,11 @@
-/// <reference path="../interfaces/interfaces.d.ts" />
-
+import interfaces from "../interfaces/interfaces";
 import { decorate, injectable } from "inversify";
 
-class ProvideDoneSyntax<T> implements IProvideDoneSyntax<T> {
+class ProvideDoneSyntax<T> implements interfaces.ProvideDoneSyntax<T> {
 
-    private _binding: inversify.IBinding<T>;
+    private _binding: inversify.interfaces.Binding<T>;
 
-    public constructor(binding: inversify.IBinding<T>) {
+    public constructor(binding: inversify.interfaces.Binding<T>) {
         this._binding = binding;
     }
 

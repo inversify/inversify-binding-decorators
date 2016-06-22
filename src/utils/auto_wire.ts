@@ -1,9 +1,7 @@
-/// <reference path="../interfaces/interfaces.d.ts" />
-
 import { decorate } from "inversify";
 import makeProvideDecorator from "../factory/provide_decorator_factory";
 
-function autoProvide(kernel: inversify.IKernel, ...modules: any[]) {
+function autoProvide(kernel: inversify.interfaces.Kernel, ...modules: any[]) {
 
     let provide = makeProvideDecorator(kernel);
 

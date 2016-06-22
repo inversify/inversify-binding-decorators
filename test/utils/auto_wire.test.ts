@@ -1,5 +1,3 @@
-/// <reference path="../../src/interfaces/interfaces.d.ts" />
-
 import { Kernel } from "inversify";
 import { expect } from "chai";
 import autoProvide from "../../src/utils/auto_wire";

@@ -1,8 +1,6 @@
-/// <reference path="../interfaces/interfaces.d.ts" />
-
 import provide from "../decorator/provide";
 
-function makeProvideDecorator(kernel: inversify.IKernel) {
+function makeProvideDecorator(kernel: inversify.interfaces.Kernel) {
     return provide(kernel);
 }
 
