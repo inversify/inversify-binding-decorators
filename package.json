@@ -1,6 +1,6 @@
 {
   "name": "inversify-binding-decorators",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-rc.1",
   "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
@@ -22,11 +22,10 @@
     "url": "https://github.com/inversify/inversify-binding-decorators/issues"
   },
   "homepage": "https://github.com/inversify/inversify-binding-decorators#readme",
-  "dependencies": {
-    "inversify": "^2.0.0-beta.10"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "inversify-dts": "^1.0.6",
+    "inversify": "^2.0.0-rc.1",
+    "inversify-dts": "^1.1.0",
     "browserify": "^13.0.1",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
