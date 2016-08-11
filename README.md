@@ -61,7 +61,7 @@ This small utility allows you to declare bindings using decorators:
 
 ```ts
 import { injectable, Kernel } from "inversify";
-import makeProvideDecorator from "inversify-binding-decorators";
+import { makeProvideDecorator } from "inversify-binding-decorators";
 import "reflect-metadata";
 
 var kernel = new Kernel();
@@ -190,7 +190,7 @@ when compared to `makeFluentProvideDecorator`:
 
 ```ts
 import { injectable, Kernel } from "inversify";
-import makeFluentProvideDecoratorfrom "inversify-binding-decorators";
+import { makeFluentProvideDecorator } from "inversify-binding-decorators";
 
 var kernel = new Kernel();
 let provide = makeFluentProvideDecorator(kernel);
