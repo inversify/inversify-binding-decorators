@@ -1,4 +1,5 @@
 import interfaces from "../interfaces/interfaces";
+import { interfaces as inversifyInterfaces } from "inversify";
 
 class ProvideInWhenOnSyntax<T> implements interfaces.ProvideInWhenOnSyntax<T>  {
 
@@ -16,7 +17,7 @@ class ProvideInWhenOnSyntax<T> implements interfaces.ProvideInWhenOnSyntax<T>  {
         this._provideOnSyntax = provideOnSyntax;
     }
 
-    public when(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public when(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.when(constraint);
     }
 
@@ -64,20 +65,24 @@ class ProvideInWhenOnSyntax<T> implements interfaces.ProvideInWhenOnSyntax<T>  {
         return this._provideWhenSyntax.whenNoAncestorTagged(tag, value);
     }
 
-    public whenAnyAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public whenAnyAncestorMatches(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenAnyAncestorMatches(constraint);
     }
 
-    public whenNoAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public whenNoAncestorMatches(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         return this._provideWhenSyntax.whenNoAncestorMatches(constraint);
     }
 
-    public onActivation(fn: (context: inversify.interfaces.Context, injectable: T) => T): interfaces.ProvideWhenSyntax<T> {
+    public onActivation(fn: (context: inversifyInterfaces.Context, injectable: T) => T): interfaces.ProvideWhenSyntax<T> {
         return this._provideOnSyntax.onActivation(fn);
     }
 
     public inSingletonScope(): interfaces.ProvideWhenOnSyntax<T> {
         return this._provideInSyntax.inSingletonScope();
+    }
+
+    public inTransientScope(): interfaces.ProvideWhenOnSyntax<T> {
+        return this._provideInSyntax.inTransientScope();
     }
 
     public done() {

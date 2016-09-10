@@ -20,16 +20,11 @@ An utility that allows developers to declare [InversifyJS](http://inversify.io/)
 You can install `inversify-binding-decorators` using npm:
 
 ```
-$ npm install --save inversify inversify-binding-decorators reflect-metadata
-$ npm install --save-dev inversify-dts
+$ npm install inversify@2.0.0-rc.14 inversify-binding-decorators reflect-metadata --save
 ```
 
-If you are workiong with TypeScript you will need the following `.d.ts` files:
-
-```
-/// <reference path="node_modules/reflect-metadata/reflect-metadata.d.ts" />
-/// <reference path="node_modules/inversify-dts/inversify-binding-decorators/inversify-binding-decorators.d.ts" />
-```
+The `inversify-binding-decorators` type definitions are included in the npm module and require TypeScript 2.0.
+Please refer to the [InversifyJS documentation](https://github.com/inversify/InversifyJS#installation) to learn more about the installation process.
 
 ### The basics
 The [InversifyJS](http://inversify.io/) API allows us to delcare bindings using a fluent API: 
@@ -83,9 +78,6 @@ class Shuriken implements ThrowableWeapon {
 
 
 ```
-
-A basic example can be found at the 
-[inversify-code-samples](https://github.com/inversify/inversify-code-samples/tree/master/inversify-binding-decorators) repository.
 
 ### Using classes, string literals & symbols as identifiers
 When you invoke `@provide` using classes:

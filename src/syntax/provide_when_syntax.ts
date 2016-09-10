@@ -1,21 +1,21 @@
 import interfaces from "../interfaces/interfaces";
-
 import ProvideOnSyntax from "./provide_on_syntax";
+import { interfaces as inversifyInterfaces } from "inversify";
 
 class ProvideWhenSyntax<T> implements interfaces.ProvideWhenSyntax<T> {
 
-    private _bindingWhenSyntax: inversify.interfaces.BindingWhenSyntax<T>;
+    private _bindingWhenSyntax: inversifyInterfaces.BindingWhenSyntax<T>;
     private _provideDoneSyntax: interfaces.ProvideDoneSyntax<T>;
 
     public constructor(
-        bindingWhenSyntax: inversify.interfaces.BindingWhenSyntax<T>,
+        bindingWhenSyntax: inversifyInterfaces.BindingWhenSyntax<T>,
         provideDoneSyntax: interfaces.ProvideDoneSyntax<T>
     ) {
         this._bindingWhenSyntax = bindingWhenSyntax;
         this._provideDoneSyntax = provideDoneSyntax;
     }
 
-    public when(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public when(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         let bindingOnSyntax = this._bindingWhenSyntax.when(constraint);
         return new ProvideOnSyntax<T>(bindingOnSyntax, this._provideDoneSyntax);
     }
@@ -75,12 +75,12 @@ class ProvideWhenSyntax<T> implements interfaces.ProvideWhenSyntax<T> {
         return new ProvideOnSyntax<T>(bindingOnSyntax, this._provideDoneSyntax);
     }
 
-    public whenAnyAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public whenAnyAncestorMatches(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         let bindingOnSyntax = this._bindingWhenSyntax.whenAnyAncestorMatches(constraint);
         return new ProvideOnSyntax<T>(bindingOnSyntax, this._provideDoneSyntax);
     }
 
-    public whenNoAncestorMatches(constraint: (request: inversify.interfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
+    public whenNoAncestorMatches(constraint: (request: inversifyInterfaces.Request) => boolean): interfaces.ProvideOnSyntax<T> {
         let bindingOnSyntax = this._bindingWhenSyntax.whenNoAncestorMatches(constraint);
         return new ProvideOnSyntax<T>(bindingOnSyntax, this._provideDoneSyntax);
     }

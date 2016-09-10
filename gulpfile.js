@@ -4,17 +4,9 @@
 //* DEPENDENCIES
 //******************************************************************************
 var gulp        = require("gulp"),
-    browserify  = require("browserify"),
-    tsify       = require("tsify"),
-    source      = require("vinyl-source-stream"),
-    buffer      = require("vinyl-buffer"),
     tslint      = require("gulp-tslint"),
     tsc         = require("gulp-typescript"),
-    sourcemaps  = require("gulp-sourcemaps"),
-    uglify      = require("gulp-uglify"),
-    rename      = require("gulp-rename"),
     runSequence = require("run-sequence"),
-    header      = require("gulp-header"),
     mocha       = require("gulp-mocha"),
     istanbul    = require("gulp-istanbul");
 
@@ -36,108 +28,57 @@ gulp.task("lint", function() {
 //******************************************************************************
 //* SOURCE
 //******************************************************************************
-var banner = ["/**",
-    " * <%= pkg.name %> v.<%= pkg.version %> - <%= pkg.description %>",
-    " * Copyright (c) 2015 <%= pkg.author %>",
-    " * <%= pkg.license %> inversify.io/LICENSE",
-    " * <%= pkg.homepage %>",
-    " */",
-    ""].join("\n");
-var pkg = require("./package.json");
-
-gulp.task("build-bundle-src", function() {
-
-  var mainTsFilePath = "src/index.ts";
-  var outputFolder   = "dist/";
-  var outputFileName = "index.js";
-
-  var bundler = browserify({
-    debug: true,
-    standalone : "inversifyBindingDecorators"
-  });
-
-  // TS compiler options are in tsconfig.json file
-  return bundler.add(mainTsFilePath)
-                .plugin(tsify)
-                .bundle()
-                .pipe(source(outputFileName))
-                .pipe(buffer())
-                .pipe(sourcemaps.init({ loadMaps: true }))
-                .pipe(header(banner, { pkg : pkg } ))
-                .pipe(sourcemaps.write('.'))
-                .pipe(gulp.dest(outputFolder));
-});
-
-gulp.task("build-bundle-compress-src", function() {
-
-  var mainTsFilePath = "src/index.ts";
-  var outputFolder   = "dist/";
-  var outputFileName = "index.min.js";
-
-  var bundler = browserify({
-    debug: true,
-    standalone : "inversifyBindingDecorators"
-  });
-
-  // TS compiler options are in tsconfig.json file
-  return bundler.add(mainTsFilePath)
-                .plugin(tsify)
-                .bundle()
-                .pipe(source(outputFileName))
-                .pipe(buffer())
-                .pipe(sourcemaps.init({ loadMaps: true }))
-                .pipe(uglify())
-                .pipe(header(banner, { pkg : pkg } ))
-                .pipe(sourcemaps.write('.'))
-                .pipe(gulp.dest(outputFolder));
-});
-
-var tsLibProject = tsc.createProject("tsconfig.json", { module : "commonjs" });
+var tsLibProject = tsc.createProject("tsconfig.json", { module : "commonjs", typescript: require("typescript") });
 
 gulp.task("build-lib", function() {
     return gulp.src([
-        "node_modules/inversify-dts/inversify/inversify.d.ts",
-        "node_modules/reflect-metadata/reflect-metadata.d.ts",
-        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tsLibProject ))
     .on("error", function (err) {
         process.exit(1);
     })
-    .js
-      .pipe(header(banner, { pkg : pkg } ))
-      .pipe(gulp.dest("lib/"));
+    .js.pipe(gulp.dest("lib/"));
 });
 
-var tsEsProject = tsc.createProject("tsconfig.json", { module : "es2015" });
+var tsEsProject = tsc.createProject("tsconfig.json", { module : "es2015", typescript: require("typescript") });
 
 gulp.task("build-es", function() {
     return gulp.src([
-        "node_modules/inversify-dts/inversify/inversify.d.ts",
-        "node_modules/reflect-metadata/reflect-metadata.d.ts",
-        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tsEsProject))
     .on("error", function (err) {
         process.exit(1);
     })
-    .js
-      .pipe(header(banner, { pkg : pkg } ))
-      .pipe(gulp.dest("es/"));
+    .js.pipe(gulp.dest("es/"));
+});
+
+var tsDtsProject = tsc.createProject("tsconfig.json", {
+    declaration: true,
+    noExternalResolve: false,
+    typescript: require("typescript") 
+});
+
+gulp.task("build-dts", function() {
+    return gulp.src([
+        "src/**/*.ts"
+    ])
+    .pipe(tsc(tsDtsProject))
+    .on("error", function (err) {
+        process.exit(1);
+    })
+    .dts.pipe(gulp.dest("dts"));
+
 });
 
 //******************************************************************************
 //* TESTS
 //******************************************************************************
-var tstProject = tsc.createProject("tsconfig.json");
+var tstProject = tsc.createProject("tsconfig.json", { typescript: require("typescript") });
 
 gulp.task("build-src", function() {
     return gulp.src([
-        "node_modules/inversify-dts/inversify/inversify.d.ts",
-        "node_modules/reflect-metadata/reflect-metadata.d.ts",
-        "typings/index.d.ts",
         "src/**/*.ts"
     ])
     .pipe(tsc(tstProject))
@@ -147,13 +88,10 @@ gulp.task("build-src", function() {
     .js.pipe(gulp.dest("src/"));
 });
 
-var tsTestProject = tsc.createProject("tsconfig.json");
+var tsTestProject = tsc.createProject("tsconfig.json", { typescript: require("typescript") });
 
 gulp.task("build-test", function() {
     return gulp.src([
-        "node_modules/inversify-dts/inversify/inversify.d.ts",
-        "node_modules/reflect-metadata/reflect-metadata.d.ts",
-        "typings/index.d.ts",
         "test/**/*.ts"
     ])
     .pipe(tsc(tsTestProject))
@@ -187,9 +125,7 @@ gulp.task("test", function(cb) {
 gulp.task("build", function(cb) {
   runSequence(
       "lint", 
-      "build-bundle-src",                       // for nodejs
-      "build-bundle-compress-src",              // for browsers
-      ["build-src", "build-es", "build-lib"],   // tests + build es and lib
+      ["build-src", "build-es", "build-lib", "build-dts"],   // tests + build es and lib
       "build-test", 
       cb);
 });

@@ -6,6 +6,7 @@ import { Kernel } from "inversify";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import "reflect-metadata";
+import { interfaces } from "inversify";
 
 describe("ProvideWhenOnSyntax", () => {
 
@@ -23,7 +24,7 @@ describe("ProvideWhenOnSyntax", () => {
     class Game {}
     let kernel = new Kernel();
     let bindingInSyntax = kernel.bind<Ninja>("Ninja").to(null);
-    let binding: inversify.interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
+    let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
     let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntax, provideDoneSyntax);
     let provideOnSyntax = new ProvideOnSyntax(bindingInSyntax, provideDoneSyntax);
@@ -43,7 +44,7 @@ describe("ProvideWhenOnSyntax", () => {
         expect(doneSpy.callCount).eq(1);
 
         let whenSpy = sandbox.spy(provideWhenSyntax, "when");
-        provideWhenOnSyntax.when((request: inversify.interfaces.Request) => { return true; });
+        provideWhenOnSyntax.when((request: interfaces.Request) => { return true; });
         expect(whenSpy.callCount).eq(1);
 
         let whenTargetNamedSpy = sandbox.spy(provideWhenSyntax, "whenTargetNamed");
@@ -91,11 +92,11 @@ describe("ProvideWhenOnSyntax", () => {
         expect(whenNoAncestorTaggedSpy.callCount).eq(1);
 
         let whenAnyAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenAnyAncestorMatches");
-        provideWhenOnSyntax.whenAnyAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideWhenOnSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
 
         let whenNoAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenNoAncestorMatches");
-        provideWhenOnSyntax.whenNoAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideWhenOnSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenNoAncestorMatchesSpy.callCount).eq(1);
 
     });

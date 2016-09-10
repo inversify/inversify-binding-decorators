@@ -4,6 +4,7 @@ import { Kernel } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 import * as sinon from "sinon";
+import { interfaces } from "inversify";
 
 describe("ProvideWhenSyntax", () => {
 
@@ -23,12 +24,12 @@ describe("ProvideWhenSyntax", () => {
         class Game {}
         let kernel = new Kernel();
         let bindingWhenSyntax = kernel.bind<Ninja>("Ninja").to(null);
-        let binding: inversify.interfaces.Binding<any> = (<any>bindingWhenSyntax)._binding;
+        let binding: interfaces.Binding<any> = (<any>bindingWhenSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let provideWhenSyntax = new ProvideWhenSyntax(bindingWhenSyntax, provideDoneSyntax);
 
         let whenSpy = sandbox.spy(bindingWhenSyntax, "when");
-        provideWhenSyntax.when((request: inversify.interfaces.Request) => { return true; });
+        provideWhenSyntax.when((request: interfaces.Request) => { return true; });
         expect(whenSpy.callCount).eql(1);
 
         let doneSpy = sandbox.spy(provideDoneSyntax, "done");
@@ -80,11 +81,11 @@ describe("ProvideWhenSyntax", () => {
         expect(whenNoAncestorTaggedSpy.callCount).eq(1);
 
         let whenAnyAncestorMatchesSpy = sandbox.spy(bindingWhenSyntax, "whenAnyAncestorMatches");
-        provideWhenSyntax.whenAnyAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideWhenSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
 
         let whenNoAncestorMatchesSpy = sandbox.spy(bindingWhenSyntax, "whenNoAncestorMatches");
-        provideWhenSyntax.whenNoAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideWhenSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenNoAncestorMatchesSpy.callCount).eq(1);
 
     });
