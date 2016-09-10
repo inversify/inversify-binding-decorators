@@ -4,6 +4,7 @@ import { Kernel } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 import * as sinon from "sinon";
+import { interfaces } from "inversify";
 
 describe("ProvideOnSyntax", () => {
 
@@ -22,7 +23,7 @@ describe("ProvideOnSyntax", () => {
         class Ninja {}
         let kernel = new Kernel();
         let bindingOnSyntax = kernel.bind<Ninja>("Ninja").to(null);
-        let binding: inversify.interfaces.Binding<any> = (<any>bindingOnSyntax)._binding;
+        let binding: interfaces.Binding<any> = (<any>bindingOnSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let provideOnSyntax = new ProvideOnSyntax(bindingOnSyntax, provideDoneSyntax);
 

@@ -185,7 +185,7 @@ describe("inversify-binding-decorators", () => {
         };
 
         let provideTransient = function(identifier: string) {
-            return provide(identifier).done();
+            return provide(identifier).inTransientScope().done();
         };
 
         interface Warrior {

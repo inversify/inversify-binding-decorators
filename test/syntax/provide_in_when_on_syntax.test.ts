@@ -7,6 +7,7 @@ import { Kernel } from "inversify";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import "reflect-metadata";
+import { interfaces } from "inversify";
 
 describe("ProvideInWhenOnSyntax", () => {
 
@@ -24,7 +25,7 @@ describe("ProvideInWhenOnSyntax", () => {
     class Game {}
     let kernel = new Kernel();
     let bindingInSyntax = kernel.bind<Ninja>("Ninja").to(null);
-    let binding: inversify.interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
+    let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
     let provideInSyntax = new ProvideInSyntax(bindingInSyntax, provideDoneSyntax);
     let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntax, provideDoneSyntax);
@@ -55,7 +56,7 @@ describe("ProvideInWhenOnSyntax", () => {
     it("Should be able to access ProvideWhenSyntax", () => {
 
         let whenSpy = sandbox.spy(provideWhenSyntax, "when");
-        provideInWhenOnSyntax.when((request: inversify.interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.when((request: interfaces.Request) => { return true; });
         expect(whenSpy.callCount).eq(1);
 
         let whenTargetNamedSpy = sandbox.spy(provideWhenSyntax, "whenTargetNamed");
@@ -103,11 +104,11 @@ describe("ProvideInWhenOnSyntax", () => {
         expect(whenNoAncestorTaggedSpy.callCount).eq(1);
 
         let whenAnyAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenAnyAncestorMatches");
-        provideInWhenOnSyntax.whenAnyAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
 
         let whenNoAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenNoAncestorMatches");
-        provideInWhenOnSyntax.whenNoAncestorMatches((request: inversify.interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
         expect(whenNoAncestorMatchesSpy.callCount).eq(1);
 
     });
