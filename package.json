@@ -4,7 +4,7 @@
   "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
-  "typings": "./dts/inversify.d.ts",
+  "typings": "./dts/index.d.ts",
   "scripts": {
     "test": "gulp",
     "prepublish": "publish-please guard",
