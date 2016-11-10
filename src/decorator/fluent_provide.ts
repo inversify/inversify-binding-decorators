@@ -6,12 +6,12 @@ import ProvideDoneSyntax from "../syntax/provide_done_syntax";
 import interfaces from "../interfaces/interfaces";
 import { interfaces as inversifyInterfaces } from "inversify";
 
-function fluentProvide(kernel: inversifyInterfaces.Kernel) {
+function fluentProvide(container: inversifyInterfaces.Container) {
 
   // function is named for testing
   return function _fluentProvide(serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any>) {
 
-    let bindingWhenOnSyntax = kernel.bind<any>(serviceIdentifier).to(null);
+    let bindingWhenOnSyntax = container.bind<any>(serviceIdentifier).to(null);
     let binding = (<any>bindingWhenOnSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax(binding);
 

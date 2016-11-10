@@ -3,7 +3,7 @@ import ProvideInSyntax from "../../src/syntax/provide_in_syntax";
 import ProvideWhenSyntax from "../../src/syntax/provide_when_syntax";
 import ProvideOnSyntax from "../../src/syntax/provide_on_syntax";
 import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
-import { Kernel } from "inversify";
+import { Container } from "inversify";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import "reflect-metadata";
@@ -23,8 +23,8 @@ describe("ProvideInWhenOnSyntax", () => {
 
     class Ninja {}
     class Game {}
-    let kernel = new Kernel();
-    let bindingInSyntax = kernel.bind<Ninja>("Ninja").to(null);
+    let container = new Container();
+    let bindingInSyntax = container.bind<Ninja>("Ninja").to(null);
     let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
     let provideInSyntax = new ProvideInSyntax(bindingInSyntax, provideDoneSyntax);

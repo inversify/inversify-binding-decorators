@@ -1,5 +1,5 @@
 import ProvideInSyntax from "../../src/syntax/provide_in_syntax";
-import { Kernel, interfaces } from "inversify";
+import { Container, interfaces } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 import * as sinon from "sinon";
@@ -20,8 +20,8 @@ describe("ProvideInSyntax", () => {
     it("Should be able to declare a binding with singleton scope", () => {
 
         class Ninja {}
-        let kernel = new Kernel();
-        let bindingInSyntax = kernel.bind<Ninja>("Ninja").to(null);
+        let container = new Container();
+        let bindingInSyntax = container.bind<Ninja>("Ninja").to(null);
         let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let bindingInSyntaxSpy = sandbox.spy(bindingInSyntax, "inSingletonScope");

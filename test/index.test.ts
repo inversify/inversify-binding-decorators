@@ -1,4 +1,4 @@
-import { Kernel, inject, tagged } from "inversify";
+import { Container, inject, tagged } from "inversify";
 import { makeProvideDecorator, makeFluentProvideDecorator } from "../src/index";
 import { expect } from "chai";
 import "reflect-metadata";
@@ -7,8 +7,8 @@ describe("inversify-binding-decorators", () => {
 
     it("Should be able to declare bindings using string literals as identifiers", () => {
 
-        let kernel = new Kernel();
-        let provide = makeProvideDecorator(kernel);
+        let container = new Container();
+        let provide = makeProvideDecorator(container);
 
         interface Warrior {
             fight(): string;
@@ -62,7 +62,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
-        let ninja = kernel.get<Warrior>(TYPE.Warrior);
+        let ninja = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -70,8 +70,8 @@ describe("inversify-binding-decorators", () => {
 
     it("Should be able to declare bindings using classes as identifiers", () => {
 
-        let kernel = new Kernel();
-        let provide = makeProvideDecorator(kernel);
+        let container = new Container();
+        let provide = makeProvideDecorator(container);
 
         @provide(Katana)
         class Katana {
@@ -106,7 +106,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
-        let ninja = kernel.get<Ninja>(Ninja);
+        let ninja = container.get<Ninja>(Ninja);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -114,8 +114,8 @@ describe("inversify-binding-decorators", () => {
 
     it("Should be able to declare bindings using symbols as identifiers", () => {
 
-        let kernel = new Kernel();
-        let provide = makeProvideDecorator(kernel);
+        let container = new Container();
+        let provide = makeProvideDecorator(container);
 
         interface Warrior {
             fight(): string;
@@ -169,7 +169,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
-        let ninja = kernel.get<Warrior>(TYPE.Warrior);
+        let ninja = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -177,8 +177,8 @@ describe("inversify-binding-decorators", () => {
 
     it("Should be able to declare the scope of a binding", () => {
 
-        let kernel = new Kernel();
-        let provide = makeFluentProvideDecorator(kernel);
+        let container = new Container();
+        let provide = makeFluentProvideDecorator(container);
 
         let provideSingleton = function(identifier: string) {
             return provide(identifier).inSingletonScope().done();
@@ -248,11 +248,11 @@ describe("inversify-binding-decorators", () => {
 
         }
 
-        let ninja = kernel.get<Warrior>(TYPE.Warrior);
+        let ninja = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight().indexOf("cut!")).eql(0);
         expect(ninja.sneak().indexOf("hit!")).eql(0);
 
-        let ninja2 = kernel.get<Warrior>(TYPE.Warrior);
+        let ninja2 = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight()).eql(ninja2.fight());
         expect(ninja.sneak()).not.to.eql(ninja2.sneak());
 
@@ -260,8 +260,8 @@ describe("inversify-binding-decorators", () => {
 
     it("Should be able to declare contextual constraints", () => {
 
-        let kernel = new Kernel();
-        let provide = makeFluentProvideDecorator(kernel);
+        let container = new Container();
+        let provide = makeFluentProvideDecorator(container);
 
         let provideThrowable = function(serviceIdentifier: string, isThrowable: boolean) {
             return provide(serviceIdentifier).whenTargetTagged("throwable", isThrowable).done();
@@ -314,7 +314,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
-        let ninja = kernel.get<Warrior>(TYPE.Warrior);
+        let ninja = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight()).eql("Hit by Katana!");
         expect(ninja.sneak()).eql("Hit by Shuriken!");
 

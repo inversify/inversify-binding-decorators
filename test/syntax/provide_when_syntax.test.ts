@@ -1,6 +1,6 @@
 import ProvideWhenSyntax from "../../src/syntax/provide_when_syntax";
 import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
-import { Kernel } from "inversify";
+import { Container } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 import * as sinon from "sinon";
@@ -22,8 +22,8 @@ describe("ProvideWhenSyntax", () => {
 
         class Ninja {}
         class Game {}
-        let kernel = new Kernel();
-        let bindingWhenSyntax = kernel.bind<Ninja>("Ninja").to(null);
+        let container = new Container();
+        let bindingWhenSyntax = container.bind<Ninja>("Ninja").to(null);
         let binding: interfaces.Binding<any> = (<any>bindingWhenSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let provideWhenSyntax = new ProvideWhenSyntax(bindingWhenSyntax, provideDoneSyntax);

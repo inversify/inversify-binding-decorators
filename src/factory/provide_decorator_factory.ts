@@ -1,8 +1,8 @@
 import provide from "../decorator/provide";
 import { interfaces } from "inversify";
 
-function makeProvideDecorator(kernel: interfaces.Kernel) {
-    return provide(kernel);
+function makeProvideDecorator(container: interfaces.Container) {
+    return provide(container);
 }
 
 export default makeProvideDecorator;
