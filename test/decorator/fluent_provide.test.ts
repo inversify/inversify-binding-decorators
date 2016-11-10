@@ -1,22 +1,22 @@
 import fluentProvide from "../../src/decorator/fluent_provide";
-import { Kernel } from "inversify";
+import { Container } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 
 describe("fluentProvide", () => {
 
-    let kernel = new Kernel();
+    let container = new Container();
 
     it("Should return a configurable decorator", () => {
 
-        let provide = fluentProvide(kernel);
+        let provide = fluentProvide(container);
         expect(typeof provide).eqls("function");
 
     });
 
     it("Should return an instance of ProvideInWhenOnSyntax once it is configured", () => {
 
-        let provide = fluentProvide(kernel);
+        let provide = fluentProvide(container);
         let provideInWhenOnSyntax = provide("SomeTypeID");
         expect((<any>provideInWhenOnSyntax)._provideInSyntax).not.to.be.eqls(null);
         expect((<any>provideInWhenOnSyntax)._provideWhenSyntax).not.to.be.eqls(null);

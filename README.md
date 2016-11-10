@@ -30,7 +30,7 @@ Please refer to the [InversifyJS documentation](https://github.com/inversify/Inv
 The [InversifyJS](http://inversify.io/) API allows us to delcare bindings using a fluent API: 
 
 ```ts
-import { injectable, Kernel } from "inversify";
+import { injectable, Container } from "inversify";
 import "reflect-metadata";
 
 @injectable()
@@ -47,20 +47,20 @@ class Shuriken implements ThrowableWeapon {
     }
 }
 
-var kernel = new Kernel();
-kernel.bind<Katana>("Katana").to(Katana);
-kernel.bind<Shuriken>("Shuriken").to(Shuriken);
+var container = new Container();
+container.bind<Katana>("Katana").to(Katana);
+container.bind<Shuriken>("Shuriken").to(Shuriken);
 ```
 
 This small utility allows you to declare bindings using decorators:
 
 ```ts
-import { injectable, Kernel } from "inversify";
+import { injectable, Container } from "inversify";
 import { makeProvideDecorator } from "inversify-binding-decorators";
 import "reflect-metadata";
 
-var kernel = new Kernel();
-let provide = makeProvideDecorator(kernel);
+var container = new Container();
+let provide = makeProvideDecorator(container);
 
 @provide(Katana)
 class Katana implements Weapon {
@@ -105,8 +105,8 @@ class Ninja {
 A new binding is created under the hood:
 
 ```ts
-kernel.bind<Katana>(Katana).to(Katana);
-kernel.bind<Ninja>(Ninja).to(Ninja);
+container.bind<Katana>(Katana).to(Katana);
+container.bind<Ninja>(Ninja).to(Ninja);
 ```
 
 These bindings use classes as identidiers but you can also use string literals as identifiers:
@@ -181,11 +181,11 @@ The decorator returned by `makeProvideDecorator` is not fluent and is very limit
 when compared to `makeFluentProvideDecorator`:
 
 ```ts
-import { injectable, Kernel } from "inversify";
+import { injectable, Container } from "inversify";
 import { makeFluentProvideDecorator } from "inversify-binding-decorators";
 
-var kernel = new Kernel();
-let provide = makeFluentProvideDecorator(kernel);
+var container = new Container();
+let provide = makeFluentProvideDecorator(container);
 
 let TYPE = {
     Weapon : "Weapon",
@@ -276,9 +276,9 @@ Consider the following example:
 ```ts
 import * as entites from "../entities";
 
-let kernel = new Kernel();
-autoProvide(kernel, entites);
-let warrior = kernel.get(entites.Warrior);
+let container = new Container();
+autoProvide(container, entites);
+let warrior = container.get(entites.Warrior);
 expect(warrior.fight()).eql("Using Katana...");
 ```
 

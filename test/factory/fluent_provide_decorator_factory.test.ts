@@ -1,17 +1,17 @@
 import makeFluentProvideDecorator from "../../src/factory/fluent_provide_decorator_factory";
 import fluentProvide from "../../src/decorator/fluent_provide";
-import { Kernel } from "inversify";
+import { Container } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 
 describe("makeFluentProvideDecorator", () => {
 
-    let kernel = new Kernel();
+    let container = new Container();
 
     it("Should return a fluentProvide decorator", () => {
 
-        let fluentProvide2 = makeFluentProvideDecorator(kernel);
-        expect((<any>fluentProvide2).name).eql((<any>fluentProvide(kernel)).name);
+        let fluentProvide2 = makeFluentProvideDecorator(container);
+        expect((<any>fluentProvide2).name).eql((<any>fluentProvide(container)).name);
 
     });
 
