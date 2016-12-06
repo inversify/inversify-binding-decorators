@@ -22,7 +22,7 @@ describe("ProvideOnSyntax", () => {
 
         class Ninja {}
         let container = new Container();
-        let bindingOnSyntax = container.bind<Ninja>("Ninja").to(null);
+        let bindingOnSyntax = container.bind<Ninja>("Ninja").to(<any>null);
         let binding: interfaces.Binding<any> = (<any>bindingOnSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let provideOnSyntax = new ProvideOnSyntax(bindingOnSyntax, provideDoneSyntax);

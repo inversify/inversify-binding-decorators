@@ -5,11 +5,11 @@ import { interfaces as inversifyInterfaces } from "inversify";
 class ProvideWhenSyntax<T> implements interfaces.ProvideWhenSyntax<T> {
 
     private _bindingWhenSyntax: inversifyInterfaces.BindingWhenSyntax<T>;
-    private _provideDoneSyntax: interfaces.ProvideDoneSyntax<T>;
+    private _provideDoneSyntax: interfaces.ProvideDoneSyntax;
 
     public constructor(
         bindingWhenSyntax: inversifyInterfaces.BindingWhenSyntax<T>,
-        provideDoneSyntax: interfaces.ProvideDoneSyntax<T>
+        provideDoneSyntax: interfaces.ProvideDoneSyntax
     ) {
         this._bindingWhenSyntax = bindingWhenSyntax;
         this._provideDoneSyntax = provideDoneSyntax;

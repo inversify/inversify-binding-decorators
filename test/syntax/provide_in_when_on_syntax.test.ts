@@ -24,7 +24,7 @@ describe("ProvideInWhenOnSyntax", () => {
     class Ninja {}
     class Game {}
     let container = new Container();
-    let bindingInSyntax = container.bind<Ninja>("Ninja").to(null);
+    let bindingInSyntax = container.bind<Ninja>("Ninja").to(<any>null);
     let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
     let provideInSyntax = new ProvideInSyntax(bindingInSyntax, provideDoneSyntax);

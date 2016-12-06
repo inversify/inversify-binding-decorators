@@ -2,22 +2,22 @@ import { interfaces as inversifyInterfaces } from "inversify";
 
 namespace interfaces {
 
-    export interface ProvideInSyntax<T> extends ProvideDoneSyntax<T> {
+    export interface ProvideDoneSyntax {
+        done(): (target: any) => any;
+    }
+
+    export interface ProvideInSyntax<T> extends ProvideDoneSyntax {
         inSingletonScope(): ProvideWhenOnSyntax<T>;
         inTransientScope(): ProvideWhenOnSyntax<T>;
     }
 
-    export interface ProvideDoneSyntax<T> {
-        done(): (target: any) => any;
-    }
-
     export interface ProvideInWhenOnSyntax<T> extends ProvideInSyntax<T>, ProvideWhenSyntax<T>, ProvideOnSyntax<T> {}
 
-    export interface ProvideOnSyntax<T> extends ProvideDoneSyntax<T> {
+    export interface ProvideOnSyntax<T> extends ProvideDoneSyntax {
         onActivation(fn: (context: inversifyInterfaces.Context, injectable: T) => T): ProvideWhenSyntax<T>;
     }
 
-    export interface ProvideWhenSyntax<T> extends ProvideDoneSyntax<T> {
+    export interface ProvideWhenSyntax<T> extends ProvideDoneSyntax {
         when(constraint: (request: inversifyInterfaces.Request) => boolean): ProvideOnSyntax<T>;
         whenTargetNamed(name: string): ProvideOnSyntax<T>;
         whenTargetTagged(tag: string, value: any): ProvideOnSyntax<T>;

@@ -38,6 +38,7 @@ typings
 dist
 lib
 es
+amd
 
 type_definitions/inversify/*.js
 

@@ -11,6 +11,10 @@
         "emitDecoratorMetadata": true,
         "noImplicitAny": true,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": false
+        "suppressImplicitAnyIndexErrors": false,
+        "noResolve": false,
+        "noUnusedParameters": false,
+        "noUnusedLocals": true,
+        "strictNullChecks": true
     }
 }

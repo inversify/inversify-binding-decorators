@@ -23,7 +23,7 @@ describe("ProvideWhenSyntax", () => {
         class Ninja {}
         class Game {}
         let container = new Container();
-        let bindingWhenSyntax = container.bind<Ninja>("Ninja").to(null);
+        let bindingWhenSyntax = container.bind<Ninja>("Ninja").to(<any>null);
         let binding: interfaces.Binding<any> = (<any>bindingWhenSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
         let provideWhenSyntax = new ProvideWhenSyntax(bindingWhenSyntax, provideDoneSyntax);
