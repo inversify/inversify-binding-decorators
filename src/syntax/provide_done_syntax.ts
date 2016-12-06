@@ -2,7 +2,7 @@ import interfaces from "../interfaces/interfaces";
 import { decorate, injectable } from "inversify";
 import { interfaces as inversifyInterfaces } from "inversify";
 
-class ProvideDoneSyntax<T> implements interfaces.ProvideDoneSyntax<T> {
+class ProvideDoneSyntax<T> implements interfaces.ProvideDoneSyntax {
 
     private _binding: inversifyInterfaces.Binding<T>;
 

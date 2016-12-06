@@ -11,7 +11,7 @@ function fluentProvide(container: inversifyInterfaces.Container) {
   // function is named for testing
   return function _fluentProvide(serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any>) {
 
-    let bindingWhenOnSyntax = container.bind<any>(serviceIdentifier).to(null);
+    let bindingWhenOnSyntax = container.bind<any>(serviceIdentifier).to(<any>null);
     let binding = (<any>bindingWhenOnSyntax)._binding;
     let provideDoneSyntax = new ProvideDoneSyntax(binding);
 

@@ -11,6 +11,8 @@ describe("inversify-binding-decorators", () => {
         let provide = makeProvideDecorator(container);
 
         interface Warrior {
+            katana: Weapon;
+            shuriken: ThrowableWeapon;
             fight(): string;
             sneak(): string;
         }
@@ -46,23 +48,27 @@ describe("inversify-binding-decorators", () => {
         @provide(TYPE.Warrior)
         class Ninja implements Warrior {
 
-            private _katana: Weapon;
-            private _shuriken: ThrowableWeapon;
+            public katana: Weapon;
+            public shuriken: ThrowableWeapon;
 
             public constructor(
                 @inject(TYPE.Weapon) katana: Weapon,
                 @inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon
             ) {
-                this._katana = katana;
-                this._shuriken = shuriken;
+                this.katana = katana;
+                this.shuriken = shuriken;
             }
 
-            public fight() { return this._katana.hit(); };
-            public sneak() { return this._shuriken.throw(); };
+            public fight() { return this.katana.hit(); };
+            public sneak() { return this.shuriken.throw(); };
 
         }
 
         let ninja = container.get<Warrior>(TYPE.Warrior);
+
+        expect(ninja instanceof Ninja).eql(true);
+        expect(ninja.katana instanceof Katana).eql(true);
+        expect(ninja.shuriken instanceof Shuriken).eql(true);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -90,23 +96,27 @@ describe("inversify-binding-decorators", () => {
         @provide(Ninja)
         class Ninja {
 
-            private _katana: Katana;
-            private _shuriken: Shuriken;
+            public katana: Katana;
+            public shuriken: Shuriken;
 
             public constructor(
                 katana: Katana,
                 shuriken: Shuriken
             ) {
-                this._katana = katana;
-                this._shuriken = shuriken;
+                this.katana = katana;
+                this.shuriken = shuriken;
             }
 
-            public fight() { return this._katana.hit(); };
-            public sneak() { return this._shuriken.throw(); };
+            public fight() { return this.katana.hit(); };
+            public sneak() { return this.shuriken.throw(); };
 
         }
 
         let ninja = container.get<Ninja>(Ninja);
+
+        expect(ninja instanceof Ninja).eql(true);
+        expect(ninja.katana instanceof Katana).eql(true);
+        expect(ninja.shuriken instanceof Shuriken).eql(true);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -118,6 +128,8 @@ describe("inversify-binding-decorators", () => {
         let provide = makeProvideDecorator(container);
 
         interface Warrior {
+            katana: Katana;
+            shuriken: Shuriken;
             fight(): string;
             sneak(): string;
         }
@@ -153,23 +165,27 @@ describe("inversify-binding-decorators", () => {
         @provide(TYPE.Warrior)
         class Ninja implements Warrior {
 
-            private _katana: Weapon;
-            private _shuriken: ThrowableWeapon;
+            public katana: Weapon;
+            public shuriken: ThrowableWeapon;
 
             public constructor(
                 @inject(TYPE.Weapon) katana: Weapon,
                 @inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon
             ) {
-                this._katana = katana;
-                this._shuriken = shuriken;
+                this.katana = katana;
+                this.shuriken = shuriken;
             }
 
-            public fight() { return this._katana.hit(); };
-            public sneak() { return this._shuriken.throw(); };
+            public fight() { return this.katana.hit(); };
+            public sneak() { return this.shuriken.throw(); };
 
         }
 
         let ninja = container.get<Warrior>(TYPE.Warrior);
+
+        expect(ninja instanceof Ninja).eql(true);
+        expect(ninja.katana instanceof Katana).eql(true);
+        expect(ninja.shuriken instanceof Shuriken).eql(true);
         expect(ninja.fight()).eql("cut!");
         expect(ninja.sneak()).eql("hit!");
 
@@ -189,6 +205,8 @@ describe("inversify-binding-decorators", () => {
         };
 
         interface Warrior {
+            katana: Weapon;
+            shuriken: ThrowableWeapon;
             fight(): string;
             sneak(): string;
         }
@@ -232,23 +250,27 @@ describe("inversify-binding-decorators", () => {
         @provideTransient(TYPE.Warrior)
         class Ninja implements Warrior {
 
-            private _katana: Weapon;
-            private _shuriken: ThrowableWeapon;
+            public katana: Weapon;
+            public shuriken: ThrowableWeapon;
 
             public constructor(
                 @inject(TYPE.Weapon) katana: Weapon,
                 @inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon
             ) {
-                this._katana = katana;
-                this._shuriken = shuriken;
+                this.katana = katana;
+                this.shuriken = shuriken;
             }
 
-            public fight() { return this._katana.hit(); };
-            public sneak() { return this._shuriken.throw(); };
+            public fight() { return this.katana.hit(); };
+            public sneak() { return this.shuriken.throw(); };
 
         }
 
         let ninja = container.get<Warrior>(TYPE.Warrior);
+        expect(ninja instanceof Ninja).eql(true);
+        expect(ninja.katana instanceof Katana).eql(true);
+        expect(ninja.shuriken instanceof Shuriken).eql(true);
+
         expect(ninja.fight().indexOf("cut!")).eql(0);
         expect(ninja.sneak().indexOf("hit!")).eql(0);
 
@@ -268,6 +290,8 @@ describe("inversify-binding-decorators", () => {
         };
 
         interface Warrior {
+            primary: Weapon;
+            secondary: Weapon;
             fight(): string;
             sneak(): string;
         }
@@ -298,23 +322,27 @@ describe("inversify-binding-decorators", () => {
         @provide(TYPE.Warrior).done()
         class Ninja implements Warrior {
 
-            private _primary: Weapon;
-            private _secondary: Weapon;
+            public primary: Weapon;
+            public secondary: Weapon;
 
             public constructor(
                 @inject(TYPE.Weapon) @tagged("throwable", false) primary: Weapon,
                 @inject(TYPE.Weapon) @tagged("throwable", true) secondary: Weapon
             ) {
-                this._primary = primary;
-                this._secondary = secondary;
+                this.primary = primary;
+                this.secondary = secondary;
             }
 
-            public fight() { return this._primary.hit(); };
-            public sneak() { return this._secondary.hit(); };
+            public fight() { return this.primary.hit(); };
+            public sneak() { return this.secondary.hit(); };
 
         }
 
         let ninja = container.get<Warrior>(TYPE.Warrior);
+
+        expect(ninja instanceof Ninja).eql(true);
+        expect(ninja.primary instanceof Katana).eql(true);
+        expect(ninja.secondary instanceof Shuriken).eql(true);
         expect(ninja.fight()).eql("Hit by Katana!");
         expect(ninja.sneak()).eql("Hit by Shuriken!");
 
