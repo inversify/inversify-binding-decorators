@@ -10,7 +10,7 @@ describe("autoProvide", () => {
     it("Should be able to auto-wire binding declarations", () => {
 
         let container = new Container();
-        // Note @inject annotations are required autoProvide 
+        // Note @inject annotations are required autoProvide
         // even when using classes are used as identifiers
         // See declaration of Warrior for more details
         autoProvide(container, entites);
