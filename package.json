@@ -39,7 +39,7 @@
     "publish-please": "^2.1.4",
     "reflect-metadata": "^0.1.3",
     "run-sequence": "^1.2.0",
-    "sinon": "^1.17.4",
+    "sinon": "^2.0.0",
     "tslint": "^4.4.2",
     "typescript": "^2.1.1"
   }
