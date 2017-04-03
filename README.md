@@ -267,7 +267,7 @@ class Shuriken implements Weapon {
 }
 ```
 
-## The auto provice utility
+## The auto provide utility
 This library includes a small utility apply to add the default `@provide` decorator to all
 the public properties of a module:
 
