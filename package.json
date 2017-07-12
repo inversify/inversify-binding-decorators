@@ -28,7 +28,7 @@
     "@types/chai": "^3.4.32",
     "@types/mocha": "^2.2.31",
     "@types/sinon": "^2.1.0",
-    "chai": "^3.5.0",
+    "chai": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^4.0.1",
