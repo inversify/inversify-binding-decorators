@@ -59,8 +59,8 @@ describe("inversify-binding-decorators", () => {
                 this.shuriken = shuriken;
             }
 
-            public fight() { return this.katana.hit(); };
-            public sneak() { return this.shuriken.throw(); };
+            public fight() { return this.katana.hit(); }
+            public sneak() { return this.shuriken.throw(); }
 
         }
 
@@ -107,8 +107,8 @@ describe("inversify-binding-decorators", () => {
                 this.shuriken = shuriken;
             }
 
-            public fight() { return this.katana.hit(); };
-            public sneak() { return this.shuriken.throw(); };
+            public fight() { return this.katana.hit(); }
+            public sneak() { return this.shuriken.throw(); }
 
         }
 
@@ -176,8 +176,8 @@ describe("inversify-binding-decorators", () => {
                 this.shuriken = shuriken;
             }
 
-            public fight() { return this.katana.hit(); };
-            public sneak() { return this.shuriken.throw(); };
+            public fight() { return this.katana.hit(); }
+            public sneak() { return this.shuriken.throw(); }
 
         }
 
@@ -196,11 +196,11 @@ describe("inversify-binding-decorators", () => {
         let container = new Container();
         let provide = makeFluentProvideDecorator(container);
 
-        let provideSingleton = function(identifier: string) {
+        let provideSingleton = function (identifier: string) {
             return provide(identifier).inSingletonScope().done();
         };
 
-        let provideTransient = function(identifier: string) {
+        let provideTransient = function (identifier: string) {
             return provide(identifier).inTransientScope().done();
         };
 
@@ -261,8 +261,8 @@ describe("inversify-binding-decorators", () => {
                 this.shuriken = shuriken;
             }
 
-            public fight() { return this.katana.hit(); };
-            public sneak() { return this.shuriken.throw(); };
+            public fight() { return this.katana.hit(); }
+            public sneak() { return this.shuriken.throw(); }
 
         }
 
@@ -285,7 +285,7 @@ describe("inversify-binding-decorators", () => {
         let container = new Container();
         let provide = makeFluentProvideDecorator(container);
 
-        let provideThrowable = function(serviceIdentifier: string, isThrowable: boolean) {
+        let provideThrowable = function (serviceIdentifier: string, isThrowable: boolean) {
             return provide(serviceIdentifier).whenTargetTagged("throwable", isThrowable).done();
         };
 
@@ -333,8 +333,8 @@ describe("inversify-binding-decorators", () => {
                 this.secondary = secondary;
             }
 
-            public fight() { return this.primary.hit(); };
-            public sneak() { return this.secondary.hit(); };
+            public fight() { return this.primary.hit(); }
+            public sneak() { return this.secondary.hit(); }
 
         }
 
