@@ -61,3 +61,4 @@ type_definitions/*.js
 
 .typingsrc
 dts
+package-lock.json

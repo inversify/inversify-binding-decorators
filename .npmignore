@@ -20,3 +20,4 @@ wallaby.js
 .gitignore
 .vscode
 type_definitions
+package-lock.json
