@@ -32,10 +32,10 @@ class ProvideInSyntax<T> implements interfaces.ProvideInSyntax<T> {
         return new ProvideWhenOnSyntax(provideWhenSyntax, provideOnSyntax);
     }
 
-    public done() {
+    public done(force?: boolean) {
         let binding: inversifyInterfaces.Binding<T> = (<any>this._bindingInSyntax)._binding;
         let provideDoneSyntax = new ProvideDoneSyntax<T>(binding);
-        return provideDoneSyntax.done();
+        return provideDoneSyntax.done(force);
     }
 
 }

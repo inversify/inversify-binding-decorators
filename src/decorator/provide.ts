@@ -20,8 +20,11 @@ function provide(container: interfaces.Container) {
         try {
           decorate(injectable(), target);
         } catch (e) {
-          throw new Error(`${e.message} ` +
-          "Please use @provide(ID, true) if you are trying to declare multiple bindings!");
+          throw new Error(
+            "Cannot apply @provide decorator multiple times but is has been used " +
+            `multiple times in ${target.name} ` +
+            "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
+          );
         }
      }
 

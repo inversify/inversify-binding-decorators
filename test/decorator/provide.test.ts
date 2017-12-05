@@ -29,7 +29,7 @@ describe("provide", () => {
 
     });
 
-    it("Should throw if applied more than once without force flag", () => {
+    it("Should throw if @provide is applied more than once without force flag", () => {
 
         const myContainer = new Container();
         const provide = _provide(myContainer);
@@ -42,12 +42,14 @@ describe("provide", () => {
         }
 
         expect(shouldThrow).to.throw(
-            "Cannot apply @injectable decorator multiple times. " +
-            "Please use @provide(ID, true) if you are trying to declare multiple bindings!");
+            "Cannot apply @provide decorator multiple times but is has been used " +
+            "multiple times in Ninja " +
+            "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
+        );
 
     });
 
-    it("Should work if applied more than once with force flag", () => {
+    it("Should work if @provide is applied more than once with force flag", () => {
 
         const myContainer = new Container();
         const provide = _provide(myContainer);

@@ -3,7 +3,7 @@ import { interfaces as inversifyInterfaces } from "inversify";
 namespace interfaces {
 
     export interface ProvideDoneSyntax {
-        done(): (target: any) => any;
+        done(force?: boolean): (target: any) => any;
     }
 
     export interface ProvideInSyntax<T> extends ProvideDoneSyntax {
