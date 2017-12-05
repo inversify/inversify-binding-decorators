@@ -85,8 +85,8 @@ class ProvideInWhenOnSyntax<T> implements interfaces.ProvideInWhenOnSyntax<T>  {
         return this._provideInSyntax.inTransientScope();
     }
 
-    public done() {
-        return this._provideInSyntax.done();
+    public done(force?: boolean) {
+        return this._provideInSyntax.done(force);
     }
 
 }

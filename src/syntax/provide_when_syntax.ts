@@ -85,8 +85,8 @@ class ProvideWhenSyntax<T> implements interfaces.ProvideWhenSyntax<T> {
         return new ProvideOnSyntax<T>(bindingOnSyntax, this._provideDoneSyntax);
     }
 
-    public done() {
-        return this._provideDoneSyntax.done();
+    public done(force?: boolean) {
+        return this._provideDoneSyntax.done(force);
     }
 
 }

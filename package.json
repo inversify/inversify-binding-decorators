@@ -1,6 +1,6 @@
 {
   "name": "inversify-binding-decorators",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "An utility that allows developers to declare InversifyJS bindings using ES2016 decorators",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",

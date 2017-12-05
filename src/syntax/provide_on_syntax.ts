@@ -20,8 +20,8 @@ class ProvideOnSyntax<T> implements interfaces.ProvideOnSyntax<T> {
         return new ProvideWhenSyntax(bindingWhenSyntax, this._provideDoneSyntax);
     }
 
-    public done() {
-        return this._provideDoneSyntax.done();
+    public done(force?: boolean) {
+        return this._provideDoneSyntax.done(force);
     }
 
 }

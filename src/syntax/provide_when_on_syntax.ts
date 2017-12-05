@@ -74,8 +74,8 @@ class ProvideWhenOnSyntax<T> implements interfaces.ProvideWhenOnSyntax<T>  {
         return this._provideOnSyntax.onActivation(fn);
     }
 
-    public done() {
-        return this._provideWhenSyntax.done();
+    public done(force?: boolean) {
+        return this._provideWhenSyntax.done(force);
     }
 
 }
