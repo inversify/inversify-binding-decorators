@@ -28,7 +28,7 @@ class ProvideDoneSyntax<T> implements interfaces.ProvideDoneSyntax {
                     throw new Error(
                         "Cannot apply @provideFluent decorator multiple times but is has been used " +
                         `multiple times in ${target.name} ` +
-                        "Please use @done(true) if you are trying to declare multiple bindings!"
+                        "Please use done(true) if you are trying to declare multiple bindings!"
                     );
                 }
             }
