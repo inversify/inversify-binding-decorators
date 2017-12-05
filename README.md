@@ -79,6 +79,35 @@ class Shuriken implements ThrowableWeapon {
 
 ```
 
+### Using @provide multiple times
+
+If you try to apply `@provide` multiple times:
+
+```ts
+@provide("Ninja")
+@provide("SilentNinja")
+class Ninja {
+    // ...
+}
+```
+
+The library will throw an exception:
+
+> Cannot apply @injectable decorator multiple times. Please use @provide(ID, true) if you are trying to declare multiple bindings!
+
+We throw an exception to ensure that you are are not trying to apply `@provide` multiple times by mistake.
+
+You can overcome this by passing the `force` argument to `@provide`:
+
+```ts
+@provide("Ninja", true)
+@provide("SilentNinja", true)
+class Ninja {
+    // ...
+}
+```
+
+
 ### Using classes, string literals & symbols as identifiers
 When you invoke `@provide` using classes:
 

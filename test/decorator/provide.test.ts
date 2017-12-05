@@ -36,7 +36,7 @@ describe("provide", () => {
 
         function shouldThrow() {
             @provide("Ninja")
-            @provide("Ninja")
+            @provide("SilentNinja")
             class Ninja {}
             return Ninja;
         }
