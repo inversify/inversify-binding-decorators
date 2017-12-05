@@ -320,7 +320,7 @@ function shouldThrow() {
 
 The library will throw an exception:
 
-> Cannot apply @provideFluent decorator multiple times but is has been used multiple times in Ninja Please use @done(true) if you are trying to declare multiple bindings!
+> Cannot apply @provideFluent decorator multiple times but is has been used multiple times in Ninja Please use done(true) if you are trying to declare multiple bindings!
 
 We throw an exception to ensure that you are are not trying to apply `@fluentProvide` multiple times by mistake.
 
