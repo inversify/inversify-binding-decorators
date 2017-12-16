@@ -143,9 +143,9 @@ describe("inversify-binding-decorators", () => {
         }
 
         let TYPE = {
-            ThrowableWeapon: Symbol("ThrowableWeapon"),
-            Warrior: Symbol("Warrior"),
-            Weapon: Symbol("Weapon"),
+            ThrowableWeapon: Symbol.for("ThrowableWeapon"),
+            Warrior: Symbol.for("Warrior"),
+            Weapon: Symbol.for("Weapon"),
         };
 
         @provide(TYPE.Weapon)
