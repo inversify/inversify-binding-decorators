@@ -2,17 +2,18 @@ import ProvideWhenOnSyntax from "../../src/syntax/provide_when_on_syntax";
 import ProvideWhenSyntax from "../../src/syntax/provide_when_syntax";
 import ProvideOnSyntax from "../../src/syntax/provide_on_syntax";
 import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
-import { Container } from "inversify";
+import { METADATA_KEY } from "../../src/constants";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import "reflect-metadata";
-import { interfaces } from "inversify";
+import { interfaces as inversifyInterfaces } from "inversify";
 
 describe("ProvideWhenOnSyntax", () => {
 
     let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
+        Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
         sandbox = sinon.sandbox.create();
     });
 
@@ -22,12 +23,11 @@ describe("ProvideWhenOnSyntax", () => {
 
     class Ninja {}
     class Game {}
-    let container = new Container();
-    let bindingInSyntax = container.bind<Ninja>("Ninja").to(<any>null);
-    let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
-    let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
-    let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntax, provideDoneSyntax);
-    let provideOnSyntax = new ProvideOnSyntax(bindingInSyntax, provideDoneSyntax);
+    let bindingInSyntaxFunction =
+            (bind: inversifyInterfaces.Bind, target: any) => bind<Ninja>("Ninja").to(<any>null);
+    let provideDoneSyntax = new ProvideDoneSyntax(bindingInSyntaxFunction);
+    let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntaxFunction, provideDoneSyntax);
+    let provideOnSyntax = new ProvideOnSyntax(bindingInSyntaxFunction, provideDoneSyntax);
     let provideWhenOnSyntax = new ProvideWhenOnSyntax( provideWhenSyntax, provideOnSyntax);
 
     it("Should set its on properties correctly", () => {
@@ -44,7 +44,7 @@ describe("ProvideWhenOnSyntax", () => {
         expect(doneSpy.callCount).eq(1);
 
         let whenSpy = sandbox.spy(provideWhenSyntax, "when");
-        provideWhenOnSyntax.when((request: interfaces.Request) => { return true; });
+        provideWhenOnSyntax.when((request: inversifyInterfaces.Request) => { return true; });
         expect(whenSpy.callCount).eq(1);
 
         let whenTargetNamedSpy = sandbox.spy(provideWhenSyntax, "whenTargetNamed");
@@ -92,11 +92,11 @@ describe("ProvideWhenOnSyntax", () => {
         expect(whenNoAncestorTaggedSpy.callCount).eq(1);
 
         let whenAnyAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenAnyAncestorMatches");
-        provideWhenOnSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
+        provideWhenOnSyntax.whenAnyAncestorMatches((request: inversifyInterfaces.Request) => { return true; });
         expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
 
         let whenNoAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenNoAncestorMatches");
-        provideWhenOnSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
+        provideWhenOnSyntax.whenNoAncestorMatches((request: inversifyInterfaces.Request) => { return true; });
         expect(whenNoAncestorMatchesSpy.callCount).eq(1);
 
     });

@@ -2,6 +2,13 @@ import { interfaces as inversifyInterfaces } from "inversify";
 
 namespace interfaces {
 
+    export type BindConstraint = (bind: inversifyInterfaces.Bind, target: any) => any;
+
+    export interface ProvideSyntax {
+        constraint: BindConstraint;
+        implementationType: any;
+    }
+
     export interface ProvideDoneSyntax {
         done(force?: boolean): (target: any) => any;
     }

@@ -1,93 +1,177 @@
 import ProvideWhenSyntax from "../../src/syntax/provide_when_syntax";
 import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
-import { Container } from "inversify";
+import { METADATA_KEY } from "../../src/constants";
+import { interfaces as inversifyInterfaces } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 import * as sinon from "sinon";
-import { interfaces } from "inversify";
+import interfaces from "../../src/interfaces/interfaces";
 
 describe("ProvideWhenSyntax", () => {
+    let NinjaClass: any;
+    class Game { }
+    let mockBind: sinon.SinonExpectation;
+
+    let mockWhenSyntax: sinon.SinonStubbedInstance<ProvideWhenSyntax<any>>;
+    let bindingWhenSyntaxFunction: (bind: inversifyInterfaces.Bind, target: any) => inversifyInterfaces.BindingWhenSyntax<any>;
+    let provideDoneSyntax: ProvideDoneSyntax;
+    let provideWhenSyntax: ProvideWhenSyntax<any>;
 
     let sandbox: sinon.SinonSandbox;
 
+    function resolveBinding(): interfaces.ProvideSyntax {
+        const metadata = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0] as interfaces.ProvideSyntax;
+        metadata.constraint(mockBind, null);
+
+        return metadata;
+
+    }
     beforeEach(() => {
-        sandbox = sinon.sandbox.create();
+        NinjaClass = class Ninja { };
+        Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
+        sandbox = sinon.createSandbox();
+
+        mockBind = sinon.expectation.create("bind");
+        mockWhenSyntax = sandbox.createStubInstance(ProvideWhenSyntax);
+        bindingWhenSyntaxFunction =
+            (bind: inversifyInterfaces.Bind, target: any) => {
+                bind("Ninja");
+                return mockWhenSyntax as any as inversifyInterfaces.BindingWhenSyntax<any>;
+            };
+        provideDoneSyntax = new ProvideDoneSyntax(bindingWhenSyntaxFunction);
+        provideWhenSyntax = new ProvideWhenSyntax(bindingWhenSyntaxFunction, provideDoneSyntax);
     });
 
     afterEach(() => {
         sandbox.restore();
     });
 
-    it("Should be able to declare a binding with contextual constraints", () => {
+    describe("Should be able to declare a binding with contextual constraints", () => {
 
-        class Ninja {}
-        class Game {}
-        let container = new Container();
-        let bindingWhenSyntax = container.bind<Ninja>("Ninja").to(<any>null);
-        let binding: interfaces.Binding<any> = (<any>bindingWhenSyntax)._binding;
-        let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
-        let provideWhenSyntax = new ProvideWhenSyntax(bindingWhenSyntax, provideDoneSyntax);
 
-        let whenSpy = sandbox.spy(bindingWhenSyntax, "when");
-        provideWhenSyntax.when((request: interfaces.Request) => { return true; });
-        expect(whenSpy.callCount).eql(1);
+        it("when", () => {
 
-        let doneSpy = sandbox.spy(provideDoneSyntax, "done");
-        provideWhenSyntax.done();
-        expect(doneSpy.callCount).eq(1);
+            provideWhenSyntax.when((request: inversifyInterfaces.Request) => { return true; }).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.when.callCount).eql(1);
+            expect(mockBind.callCount).eq(1);
+        });
 
-        let whenTargetNamedSpy = sandbox.spy(bindingWhenSyntax, "whenTargetNamed");
-        provideWhenSyntax.whenTargetNamed("throwable");
-        expect(whenTargetNamedSpy.callCount).eq(1);
+        it("done", () => {
+            const doneSpy = sandbox.spy(provideDoneSyntax, "done");
+            provideWhenSyntax.done()(NinjaClass);
+            resolveBinding();
+            expect(doneSpy.callCount).eq(1, "done not called");
+            expect(mockBind.callCount).eq(1);
+        });
 
-        let whenTargetTaggedSpy = sandbox.spy(bindingWhenSyntax, "whenTargetTagged");
-        provideWhenSyntax.whenTargetTagged("throwable", true);
-        expect(whenTargetTaggedSpy.callCount).eq(1);
+        it("whenTargetNamed", () => {
 
-        let whenInjectedIntoSpy = sandbox.spy(bindingWhenSyntax, "whenInjectedInto");
-        provideWhenSyntax.whenInjectedInto(Game);
-        expect(whenInjectedIntoSpy.callCount).eq(1);
+            provideWhenSyntax.whenTargetNamed("throwable").done()(NinjaClass);
+            resolveBinding();
 
-        let whenParentNamedSpy = sandbox.spy(bindingWhenSyntax, "whenParentNamed");
-        provideWhenSyntax.whenParentNamed("throwable");
-        expect(whenParentNamedSpy.callCount).eq(1);
+            expect(mockWhenSyntax.whenTargetNamed.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
 
-        let whenParentTaggedSpy = sandbox.spy(bindingWhenSyntax, "whenParentTagged");
-        provideWhenSyntax.whenParentTagged("throwable", true);
-        expect(whenParentTaggedSpy.callCount).eq(1);
+        it("whenTargetNamed", () => {
 
-        let whenAnyAncestorIsSpy = sandbox.spy(bindingWhenSyntax, "whenAnyAncestorIs");
-        provideWhenSyntax.whenAnyAncestorIs(Game);
-        expect(whenAnyAncestorIsSpy.callCount).eq(1);
+            provideWhenSyntax.whenTargetTagged("throwable", true).done()(NinjaClass);
+            resolveBinding();
 
-        let whenNoAncestorIsSpy = sandbox.spy(bindingWhenSyntax, "whenNoAncestorIs");
-        provideWhenSyntax.whenNoAncestorIs(Game);
-        expect(whenNoAncestorIsSpy.callCount).eq(1);
+            expect(mockWhenSyntax.whenTargetTagged.callCount).eq(1);
+        });
 
-        let whenAnyAncestorNamedSpy = sandbox.spy(bindingWhenSyntax, "whenAnyAncestorNamed");
-        provideWhenSyntax.whenAnyAncestorNamed("throwable");
-        expect(whenAnyAncestorNamedSpy.callCount).eq(1);
+        it("whenInjectedInto", () => {
 
-        let whenAnyAncestorTaggedSpy = sandbox.spy(bindingWhenSyntax, "whenAnyAncestorTagged");
-        provideWhenSyntax.whenAnyAncestorTagged("throwable", false);
-        expect(whenAnyAncestorTaggedSpy.callCount).eq(1);
+            provideWhenSyntax.whenInjectedInto(Game).done()(NinjaClass);
+            resolveBinding();
 
-        let whenNoAncestorNamedSpy = sandbox.spy(bindingWhenSyntax, "whenNoAncestorNamed");
-        provideWhenSyntax.whenNoAncestorNamed("throwable");
-        expect(whenNoAncestorNamedSpy.callCount).eq(1);
+            expect(mockWhenSyntax.whenInjectedInto.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
 
-        let whenNoAncestorTaggedSpy = sandbox.spy(bindingWhenSyntax, "whenNoAncestorTagged");
-        provideWhenSyntax.whenNoAncestorTagged("throwable", false);
-        expect(whenNoAncestorTaggedSpy.callCount).eq(1);
+        it("whenParentNamed", () => {
 
-        let whenAnyAncestorMatchesSpy = sandbox.spy(bindingWhenSyntax, "whenAnyAncestorMatches");
-        provideWhenSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
-        expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
+            provideWhenSyntax.whenParentNamed("throwable").done()(NinjaClass);
+            resolveBinding();
 
-        let whenNoAncestorMatchesSpy = sandbox.spy(bindingWhenSyntax, "whenNoAncestorMatches");
-        provideWhenSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
-        expect(whenNoAncestorMatchesSpy.callCount).eq(1);
+            expect(mockWhenSyntax.whenParentNamed.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
 
+        it("whenParentTagged", () => {
+
+            provideWhenSyntax.whenParentTagged("throwable", true).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenParentTagged.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenAnyAncestorIs", () => {
+
+            provideWhenSyntax.whenAnyAncestorIs(Game).done()(NinjaClass);
+            resolveBinding();
+
+            expect(mockWhenSyntax.whenAnyAncestorIs.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenNoAncestorIs", () => {
+
+            provideWhenSyntax.whenNoAncestorIs(Game).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenNoAncestorIs.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenAnyAncestorNamed", () => {
+
+            provideWhenSyntax.whenAnyAncestorNamed("throwable").done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenAnyAncestorNamed.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenAnyAncestorTagged", () => {
+
+            provideWhenSyntax.whenAnyAncestorTagged("throwable", false).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenAnyAncestorTagged.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenNoAncestorNamed", () => {
+
+            provideWhenSyntax.whenNoAncestorNamed("throwable").done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenNoAncestorNamed.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenNoAncestorTagged", () => {
+
+            provideWhenSyntax.whenNoAncestorTagged("throwable", false).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenNoAncestorTagged.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenAnyAncestorMatches", () => {
+
+            provideWhenSyntax.whenAnyAncestorMatches((request: inversifyInterfaces.Request) => { return true; }).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenAnyAncestorMatches.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
+
+        it("whenNoAncestorMatches", () => {
+
+            provideWhenSyntax.whenNoAncestorMatches((request: inversifyInterfaces.Request) => { return true; }).done()(NinjaClass);
+            resolveBinding();
+            expect(mockWhenSyntax.whenNoAncestorMatches.callCount).eq(1);
+            expect(mockBind.callCount).eq(1);
+        });
     });
 
 });

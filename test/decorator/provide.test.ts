@@ -1,43 +1,49 @@
-import _provide from "../../src/decorator/provide";
-import { Container } from "inversify";
+import provide from "../../src/decorator/provide";
+import { METADATA_KEY } from "../../src/constants";
+import interfaces from "../../src/interfaces/interfaces";
 import { expect } from "chai";
+import * as sinon from "sinon";
 import "reflect-metadata";
 
 describe("provide", () => {
 
-    let container = new Container();
+    let sandbox: sinon.SinonSandbox;
 
-    it("Should return a configurable decorator", () => {
+    beforeEach(() => {
+        sandbox = sinon.createSandbox();
+    });
 
-        let provide = _provide(container);
-        expect(typeof provide).eqls("function");
+    afterEach(() => {
+        sandbox.restore();
+    });
+    it("Should return target type", () => {
+
+        class Ninja { }
+        const provided = provide(Ninja);
+        expect(typeof provided).eqls("function");
 
     });
 
     it("Should generate a binding when configured and applied to a class", () => {
 
-        class Ninja {}
-        let provide = _provide(container);
-        let provideClassDecorator = provide("Ninja");
-        expect(typeof provideClassDecorator).eqls("function");
+        class Ninja { }
+        provide("Ninja")(Ninja);
+        const bindingSpy = sandbox.spy();
+        const bindSpy = sandbox.spy(() => { return { to: bindingSpy }; });
 
-        provideClassDecorator(Ninja);
-
-        let binding = (<any>container)._bindingDictionary.get("Ninja")[0];
-        expect(binding.serviceIdentifier).eql("Ninja");
-        expect(binding.implementationType).eql(Ninja);
+        let bindingMetadata: interfaces.ProvideSyntax = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
+        bindingMetadata.constraint(bindSpy, Ninja);
+        expect(bindingMetadata.implementationType).eql(Ninja);
+        expect(bindSpy.calledWith("Ninja")).eql(true);
+        expect(bindingSpy.calledWith(Ninja));
 
     });
 
     it("Should throw if @provide is applied more than once without force flag", () => {
-
-        const myContainer = new Container();
-        const provide = _provide(myContainer);
-
         function shouldThrow() {
             @provide("Ninja")
             @provide("SilentNinja")
-            class Ninja {}
+            class Ninja { }
             return Ninja;
         }
 
@@ -51,13 +57,10 @@ describe("provide", () => {
 
     it("Should work if @provide is applied more than once with force flag", () => {
 
-        const myContainer = new Container();
-        const provide = _provide(myContainer);
-
         function shouldThrow() {
             @provide("Ninja", true)
             @provide("SilentWarrior", true)
-            class Ninja {}
+            class Ninja { }
             return Ninja;
         }
 

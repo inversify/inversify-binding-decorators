@@ -1,38 +1,53 @@
-import { decorate, injectable, METADATA_KEY } from "inversify";
-import { interfaces } from "inversify";
+import { decorate, injectable, METADATA_KEY as inversify_METADATA_KEY } from "inversify";
+import { interfaces as inversifyInterfaces } from "inversify";
+import interfaces from "../interfaces/interfaces";
+import { METADATA_KEY } from "../constants";
 
-function provide(container: interfaces.Container) {
-  return function _provide(
-    serviceIdentifier: interfaces.ServiceIdentifier<any>,
-    force?: boolean
-  ) {
-    let bindingWhenOnSyntax = container.bind<any>(serviceIdentifier).to(<any>null);
-    return function (target: any) {
+function provide(
+  serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any>,
+  force?: boolean
+) {
 
-      const isAlreadyDecorated = Reflect.hasOwnMetadata(METADATA_KEY.PARAM_TYPES, target);
-      const redecorateWithInject = force === true;
+  return function (target: any) {
 
-     if (redecorateWithInject === true && isAlreadyDecorated === false) {
+    const isAlreadyDecorated = Reflect.hasOwnMetadata(inversify_METADATA_KEY.PARAM_TYPES, target);
+    const redecorateWithInject = force === true;
+
+    if (redecorateWithInject === true && isAlreadyDecorated === false) {
+      decorate(injectable(), target);
+    } else if (redecorateWithInject === true && isAlreadyDecorated === true) {
+      // Do nothing
+    } else {
+      try {
         decorate(injectable(), target);
-      } else if (redecorateWithInject === true && isAlreadyDecorated === true) {
-        // Do nothing
-      } else {
-        try {
-          decorate(injectable(), target);
-        } catch (e) {
-          throw new Error(
-            "Cannot apply @provide decorator multiple times but is has been used " +
-            `multiple times in ${target.name} ` +
-            "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
-          );
-        }
-     }
+      } catch (e) {
+        throw new Error(
+          "Cannot apply @provide decorator multiple times but is has been used " +
+          `multiple times in ${target.name} ` +
+          "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
+        );
+      }
+    }
 
-     let binding: interfaces.Binding<any> = (<any>bindingWhenOnSyntax)._binding;
-     binding.implementationType = target;
-     return target;
-
+    const currentMetadata: interfaces.ProvideSyntax = {
+      constraint: (bind: inversifyInterfaces.Bind, bindTarget: any) => bind(serviceIdentifier).to(bindTarget),
+      implementationType: target
     };
+
+    const previousMetadata: interfaces.ProvideSyntax[] = Reflect.getMetadata(
+      METADATA_KEY.provide,
+      Reflect
+    ) || [];
+
+    const newMetadata = [currentMetadata, ...previousMetadata];
+
+    Reflect.defineMetadata(
+      METADATA_KEY.provide,
+      newMetadata,
+      Reflect
+    );
+    return target;
+
   };
 }
 

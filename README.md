@@ -56,11 +56,8 @@ This small utility allows you to declare bindings using decorators:
 
 ```ts
 import { injectable, Container } from "inversify";
-import { makeProvideDecorator } from "inversify-binding-decorators";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
 import "reflect-metadata";
-
-var container = new Container();
-let provide = makeProvideDecorator(container);
 
 @provide(Katana)
 class Katana implements Weapon {
@@ -76,6 +73,10 @@ class Shuriken implements ThrowableWeapon {
     }
 }
 
+var container = new Container();
+// Reflects all decorators provided by this package and packages them into 
+// a module to be loaded by the container
+container.load(buildProviderModule());
 
 ```
 
@@ -206,36 +207,30 @@ scope and other advanced binding features. However, `inversify-binding-decorator
 includes a second decorator that allows you to achieve access the full potential 
 of the fluent binding syntax:
 
-The decorator returned by `makeProvideDecorator` is not fluent and is very limited 
-when compared to `makeFluentProvideDecorator`:
-
 ```ts
 import { injectable, Container } from "inversify";
-import { makeFluentProvideDecorator } from "inversify-binding-decorators";
-
-var container = new Container();
-let provide = makeFluentProvideDecorator(container);
+import { fluentProvide, buildProviderModule } from "inversify-binding-decorators";
 
 let TYPE = {
     Weapon : "Weapon",
     Ninja: "Ninja"
 };
 
-@provide(TYPE.Weapon).whenTargetTagged("throwable", true).done();
+@fluentProvide(TYPE.Weapon).whenTargetTagged("throwable", true).done();
 class Katana implements Weapon {
     public hit() {
         return "cut!";
     }
 }
 
-@provide(TYPE.Weapon).whenTargetTagged("throwable", false).done();
+@fluentProvide(TYPE.Weapon).whenTargetTagged("throwable", false).done();
 class Shuriken implements Weapon {
     public hit() {
         return "hit!";
     }
 }
 
-@provide(TYPE.Ninja)
+@fluentProvide(TYPE.Ninja).done();
 class Ninja implements Ninja {
 
     private _katana: Weapon;
@@ -253,6 +248,9 @@ class Ninja implements Ninja {
     public sneak() { return this._shuriken.throw(); };
 
 }
+
+var container = new Container();
+container.load(buildProviderModule());
 ```
 
 One of the best things about the fluent decorator is that you can create aliases to fit your needs:
@@ -327,8 +325,6 @@ We throw an exception to ensure that you are are not trying to apply `@fluentPro
 You can overcome this by passing the `force` argument to `done()`:
 
 ```ts
-let container = new Container();
-let provideFluent = fluentProvide(container);
 
 const provideSingleton = (identifier: any) => {
     return provideFluent(identifier)
@@ -342,6 +338,8 @@ function shouldThrow() {
     class Ninja {}
     return Ninja;
 }
+let container = new Container();
+container.load(buildProviderModule());
 ```
 
 
