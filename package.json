@@ -37,7 +37,7 @@
     "inversify": "4.11.0",
     "mocha": "5.1.0",
     "publish-please": "2.4.0",
-    "reflect-metadata": "^0.1.12",
+    "reflect-metadata": "0.1.12",
     "run-sequence": "2.2.1",
     "sinon": "5.0.0",
     "tslint": "5.9.1",
