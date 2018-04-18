@@ -7,11 +7,11 @@ import { interfaces as inversifyInterfaces } from "inversify";
 
 class ProvideInSyntax<T> implements interfaces.ProvideInSyntax<T> {
 
-    private _bindingInSyntax: inversifyInterfaces.BindingInSyntax<T>;
+    private _bindingInSyntax: (bind: inversifyInterfaces.Bind, target: any) => inversifyInterfaces.BindingInSyntax<T>;
     private _provideDoneSyntax: interfaces.ProvideDoneSyntax;
 
     public constructor(
-        bindingInSyntax: inversifyInterfaces.BindingInSyntax<T>,
+        bindingInSyntax: (bind: inversifyInterfaces.Bind, target: any) => inversifyInterfaces.BindingInSyntax<T>,
         provideDoneSyntax: interfaces.ProvideDoneSyntax
     ) {
         this._bindingInSyntax = bindingInSyntax;
@@ -19,23 +19,25 @@ class ProvideInSyntax<T> implements interfaces.ProvideInSyntax<T> {
     }
 
     public inSingletonScope(): interfaces.ProvideWhenOnSyntax<T> {
-        let bindingWhenOnSyntax = this._bindingInSyntax.inSingletonScope();
-        let provideWhenSyntax = new ProvideWhenSyntax<T>(bindingWhenOnSyntax, this._provideDoneSyntax);
-        let provideOnSyntax = new ProvideOnSyntax<T>(bindingWhenOnSyntax, this._provideDoneSyntax);
+        let bindingWhenOnSyntax = (bind: inversifyInterfaces.Bind, target: any) =>
+            this._bindingInSyntax(bind, target).inSingletonScope();
+        let inDoneSyntax = new ProvideDoneSyntax(bindingWhenOnSyntax);
+        let provideWhenSyntax = new ProvideWhenSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
+        let provideOnSyntax = new ProvideOnSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
         return new ProvideWhenOnSyntax(provideWhenSyntax, provideOnSyntax);
     }
 
     public inTransientScope(): interfaces.ProvideWhenOnSyntax<T> {
-        let bindingWhenOnSyntax = this._bindingInSyntax.inTransientScope();
-        let provideWhenSyntax = new ProvideWhenSyntax<T>(bindingWhenOnSyntax, this._provideDoneSyntax);
-        let provideOnSyntax = new ProvideOnSyntax<T>(bindingWhenOnSyntax, this._provideDoneSyntax);
+        let bindingWhenOnSyntax = (bind: inversifyInterfaces.Bind, target: any) => this._bindingInSyntax(bind, target).inTransientScope();
+        let inDoneSyntax = new ProvideDoneSyntax(bindingWhenOnSyntax);
+
+        let provideWhenSyntax = new ProvideWhenSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
+        let provideOnSyntax = new ProvideOnSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
         return new ProvideWhenOnSyntax(provideWhenSyntax, provideOnSyntax);
     }
 
     public done(force?: boolean) {
-        let binding: inversifyInterfaces.Binding<T> = (<any>this._bindingInSyntax)._binding;
-        let provideDoneSyntax = new ProvideDoneSyntax<T>(binding);
-        return provideDoneSyntax.done(force);
+        return this._provideDoneSyntax.done(force);
     }
 
 }

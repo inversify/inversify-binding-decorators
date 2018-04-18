@@ -1,20 +1,18 @@
 import fluentProvide from "../../src/decorator/fluent_provide";
-import { Container } from "inversify";
 import { expect } from "chai";
 import "reflect-metadata";
 
 describe("fluentProvide", () => {
 
-    it("Should return a configurable decorator", () => {
-        let container = new Container();
-        let provide = fluentProvide(container);
-        expect(typeof provide).eqls("function");
+    it("Should return a configurable fluent builder", () => {
+        class Ninja { }
+        let provided = fluentProvide(Ninja);
+        expect(provided).have.property("inSingletonScope");
+        expect(provided).have.property("done");
     });
 
     it("Should return an instance of ProvideInWhenOnSyntax once it is configured", () => {
-        let container = new Container();
-        let provide = fluentProvide(container);
-        let provideInWhenOnSyntax = provide("SomeTypeID");
+        let provideInWhenOnSyntax = fluentProvide("SomeTypeID");
         expect((<any>provideInWhenOnSyntax)._provideInSyntax).not.to.be.eqls(null);
         expect((<any>provideInWhenOnSyntax)._provideWhenSyntax).not.to.be.eqls(null);
         expect((<any>provideInWhenOnSyntax)._provideOnSyntax).not.to.be.eqls(null);
@@ -25,19 +23,16 @@ describe("fluentProvide", () => {
 
     it("Should throw if @fluentProvide is applied more than once without force flag", () => {
 
-        let container = new Container();
-        let provideFluent = fluentProvide(container);
-
         const provideSingleton = (identifier: any) => {
-          return provideFluent(identifier)
-            .inSingletonScope()
-            .done();
+            return fluentProvide(identifier)
+                .inSingletonScope()
+                .done();
         };
 
         function shouldThrow() {
             @provideSingleton("Ninja")
             @provideSingleton("SilentNinja")
-            class Ninja {}
+            class Ninja { }
             return Ninja;
         }
 
@@ -51,19 +46,16 @@ describe("fluentProvide", () => {
 
     it("Should work if @provide is applied more than once with force flag", () => {
 
-        let container = new Container();
-        let provideFluent = fluentProvide(container);
-
         const provideSingleton = (identifier: any) => {
-            return provideFluent(identifier)
-            .inSingletonScope()
-            .done(true); // IMPORTANT!
+            return fluentProvide(identifier)
+                .inSingletonScope()
+                .done(true); // IMPORTANT!
         };
 
         function shouldThrow() {
             @provideSingleton("Ninja")
             @provideSingleton("SilentNinja")
-            class Ninja {}
+            class Ninja { }
             return Ninja;
         }
 

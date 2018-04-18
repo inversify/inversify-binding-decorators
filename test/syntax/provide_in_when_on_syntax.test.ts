@@ -3,17 +3,18 @@ import ProvideInSyntax from "../../src/syntax/provide_in_syntax";
 import ProvideWhenSyntax from "../../src/syntax/provide_when_syntax";
 import ProvideOnSyntax from "../../src/syntax/provide_on_syntax";
 import ProvideDoneSyntax from "../../src/syntax/provide_done_syntax";
-import { Container } from "inversify";
+import { METADATA_KEY } from "../../src/constants";
+import { interfaces as inversifyInterfaces } from "inversify";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import "reflect-metadata";
-import { interfaces } from "inversify";
 
 describe("ProvideInWhenOnSyntax", () => {
 
     let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
+        Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
         sandbox = sinon.sandbox.create();
     });
 
@@ -23,13 +24,12 @@ describe("ProvideInWhenOnSyntax", () => {
 
     class Ninja {}
     class Game {}
-    let container = new Container();
-    let bindingInSyntax = container.bind<Ninja>("Ninja").to(<any>null);
-    let binding: interfaces.Binding<any> = (<any>bindingInSyntax)._binding;
-    let provideDoneSyntax = new ProvideDoneSyntax<any>(binding);
-    let provideInSyntax = new ProvideInSyntax(bindingInSyntax, provideDoneSyntax);
-    let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntax, provideDoneSyntax);
-    let provideOnSyntax = new ProvideOnSyntax(bindingInSyntax, provideDoneSyntax);
+    let bindingInSyntaxFunction =
+            (bind: inversifyInterfaces.Bind, target: any) => bind<Ninja>("Ninja").to(<any>null);
+    let provideDoneSyntax = new ProvideDoneSyntax(bindingInSyntaxFunction);
+    let provideInSyntax = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
+    let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntaxFunction, provideDoneSyntax);
+    let provideOnSyntax = new ProvideOnSyntax(bindingInSyntaxFunction, provideDoneSyntax);
     let provideInWhenOnSyntax = new ProvideInWhenOnSyntax(provideInSyntax, provideWhenSyntax, provideOnSyntax);
 
     it("Should set its on properties correctly", () => {
@@ -56,7 +56,7 @@ describe("ProvideInWhenOnSyntax", () => {
     it("Should be able to access ProvideWhenSyntax", () => {
 
         let whenSpy = sandbox.spy(provideWhenSyntax, "when");
-        provideInWhenOnSyntax.when((request: interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.when((request: inversifyInterfaces.Request) => { return true; });
         expect(whenSpy.callCount).eq(1);
 
         let whenTargetNamedSpy = sandbox.spy(provideWhenSyntax, "whenTargetNamed");
@@ -104,11 +104,11 @@ describe("ProvideInWhenOnSyntax", () => {
         expect(whenNoAncestorTaggedSpy.callCount).eq(1);
 
         let whenAnyAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenAnyAncestorMatches");
-        provideInWhenOnSyntax.whenAnyAncestorMatches((request: interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.whenAnyAncestorMatches((request: inversifyInterfaces.Request) => { return true; });
         expect(whenAnyAncestorMatchesSpy.callCount).eq(1);
 
         let whenNoAncestorMatchesSpy = sandbox.spy(provideWhenSyntax, "whenNoAncestorMatches");
-        provideInWhenOnSyntax.whenNoAncestorMatches((request: interfaces.Request) => { return true; });
+        provideInWhenOnSyntax.whenNoAncestorMatches((request: inversifyInterfaces.Request) => { return true; });
         expect(whenNoAncestorMatchesSpy.callCount).eq(1);
 
     });

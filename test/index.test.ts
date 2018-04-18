@@ -1,14 +1,22 @@
-import { Container, inject, tagged } from "inversify";
-import { makeProvideDecorator, makeFluentProvideDecorator } from "../src/index";
+import { Container, inject, tagged, named } from "inversify";
+import provide from "../src/decorator/provide";
+import fluentProvide from "../src/decorator/fluent_provide";
+import buildProviderModule from "../src/factory/module_factory";
 import { expect } from "chai";
 import "reflect-metadata";
+import { METADATA_KEY } from "../src/constants";
 
 describe("inversify-binding-decorators", () => {
+
+    beforeEach(() => {
+
+        // Clean our metadata before each test
+        Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
+    });
 
     it("Should be able to declare bindings using string literals as identifiers", () => {
 
         let container = new Container();
-        let provide = makeProvideDecorator(container);
 
         interface Warrior {
             katana: Weapon;
@@ -64,6 +72,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
+        container.load(buildProviderModule());
         let ninja = container.get<Warrior>(TYPE.Warrior);
 
         expect(ninja instanceof Ninja).eql(true);
@@ -77,7 +86,6 @@ describe("inversify-binding-decorators", () => {
     it("Should be able to declare bindings using classes as identifiers", () => {
 
         let container = new Container();
-        let provide = makeProvideDecorator(container);
 
         @provide(Katana)
         class Katana {
@@ -112,6 +120,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
+        container.load(buildProviderModule());
         let ninja = container.get<Ninja>(Ninja);
 
         expect(ninja instanceof Ninja).eql(true);
@@ -125,7 +134,6 @@ describe("inversify-binding-decorators", () => {
     it("Should be able to declare bindings using symbols as identifiers", () => {
 
         let container = new Container();
-        let provide = makeProvideDecorator(container);
 
         interface Warrior {
             katana: Katana;
@@ -181,6 +189,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
+        container.load(buildProviderModule());
         let ninja = container.get<Warrior>(TYPE.Warrior);
 
         expect(ninja instanceof Ninja).eql(true);
@@ -194,14 +203,13 @@ describe("inversify-binding-decorators", () => {
     it("Should be able to declare the scope of a binding", () => {
 
         let container = new Container();
-        let provide = makeFluentProvideDecorator(container);
 
         let provideSingleton = function (identifier: string) {
-            return provide(identifier).inSingletonScope().done();
+            return fluentProvide(identifier).inSingletonScope().done();
         };
 
         let provideTransient = function (identifier: string) {
-            return provide(identifier).inTransientScope().done();
+            return fluentProvide(identifier).inTransientScope().done();
         };
 
         interface Warrior {
@@ -266,6 +274,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
+        container.load(buildProviderModule());
         let ninja = container.get<Warrior>(TYPE.Warrior);
         expect(ninja instanceof Ninja).eql(true);
         expect(ninja.katana instanceof Katana).eql(true);
@@ -283,10 +292,9 @@ describe("inversify-binding-decorators", () => {
     it("Should be able to declare contextual constraints", () => {
 
         let container = new Container();
-        let provide = makeFluentProvideDecorator(container);
 
         let provideThrowable = function (serviceIdentifier: string, isThrowable: boolean) {
-            return provide(serviceIdentifier).whenTargetTagged("throwable", isThrowable).done();
+            return fluentProvide(serviceIdentifier).whenTargetTagged("throwable", isThrowable).done();
         };
 
         interface Warrior {
@@ -319,7 +327,7 @@ describe("inversify-binding-decorators", () => {
             }
         }
 
-        @provide(TYPE.Warrior).done()
+        @fluentProvide(TYPE.Warrior).done()
         class Ninja implements Warrior {
 
             public primary: Weapon;
@@ -338,6 +346,7 @@ describe("inversify-binding-decorators", () => {
 
         }
 
+        container.load(buildProviderModule());
         let ninja = container.get<Warrior>(TYPE.Warrior);
 
         expect(ninja instanceof Ninja).eql(true);
@@ -345,6 +354,131 @@ describe("inversify-binding-decorators", () => {
         expect(ninja.secondary instanceof Shuriken).eql(true);
         expect(ninja.fight()).eql("Hit by Katana!");
         expect(ninja.sneak()).eql("Hit by Shuriken!");
+
+    });
+
+    it("Should be able to both declare scope and declare contextual constraints", () => {
+
+        let container = new Container();
+
+        let provideShortWeapon = function (serviceIdentifier: string, isThrowable: boolean) {
+            return fluentProvide(serviceIdentifier).inSingletonScope().whenAnyAncestorNamed("shortsword").done();
+        };
+        let provideLongWeapon = function (serviceIdentifier: string, isThrowable: boolean) {
+            return fluentProvide(serviceIdentifier).whenNoAncestorNamed("shortsword").done();
+        };
+
+        interface Warrior {
+            weapon: Weapon;
+            fight(): number;
+            weaponLength(): string;
+        }
+
+        interface Weapon {
+            hit(): number;
+            length(): string;
+        }
+
+        interface Dojo {
+            warrior: Warrior;
+        }
+
+        let TYPE = {
+            Dojo: "Dojo",
+            Warrior: "Warrior",
+            Weapon: "Weapon"
+        };
+
+        @provideShortWeapon(TYPE.Weapon, false)
+        class Wakizashi implements Weapon {
+            private _mark: any;
+            public constructor() {
+                this._mark = Math.random();
+            }
+            public hit() {
+                return this._mark;
+            }
+            public length() {
+                return "short";
+            }
+        }
+        @provideLongWeapon(TYPE.Weapon, false)
+        class Katana implements Weapon {
+            private _mark: any;
+            public constructor() {
+                this._mark = Math.random();
+            }
+            public hit() {
+                return this._mark;
+            }
+            public length() {
+                return "long";
+            }
+        }
+
+        @provide(KatanaDojo)
+        class KatanaDojo implements Dojo {
+            public warrior: Warrior;
+            constructor(@inject(TYPE.Warrior) warrior: Warrior) {
+                this.warrior = warrior;
+            }
+        }
+
+        @provide(WakizashiDojo)
+        class WakizashiDojo implements Dojo {
+            public warrior: Warrior;
+            constructor(@named("shortsword") @inject(TYPE.Warrior) warrior: Warrior) {
+                this.warrior = warrior;
+            }
+        }
+
+        @fluentProvide(TYPE.Warrior).done()
+        class Ninja implements Warrior {
+
+            public weapon: Weapon;
+
+            public constructor(
+                @inject(TYPE.Weapon) weapon: Weapon,
+            ) {
+                this.weapon = weapon;
+            }
+
+            public fight() { return this.weapon.hit(); }
+            public weaponLength() { return this.weapon.length(); }
+
+        }
+
+        container.load(buildProviderModule());
+
+        // get default ninja, exercise whenNoAncestorNamed
+        let ninjaDefault = container.get<Warrior>(TYPE.Warrior);
+        // exercise whenAnyAncestorNamed
+        let ninjaShort = container.getNamed<Warrior>(TYPE.Warrior, "shortsword");
+        // get default dojo, exercise get by self type
+        let katanaDojo = container.get<KatanaDojo>(KatanaDojo);
+        let wakizashiDojo = container.get<KatanaDojo>(WakizashiDojo);
+
+        // Test default ninja; should have gotten 'long' weapon, Katana
+        expect(ninjaDefault instanceof Ninja).eql(true);
+        expect(ninjaDefault.weaponLength()).eql("long", "defaultNinja weapon length not 'long'");
+        expect(ninjaDefault.weapon instanceof Katana).eql(true);
+
+        // Test that our ancestor binding gave us a 'long' weapon, Wakizashi
+        expect(ninjaShort.weaponLength()).eql("short", "ninjaShort weapon length not 'short'");
+        expect(ninjaShort.weapon instanceof Wakizashi).eql(true);
+
+        // test whenNoAncestorNamed again, to make sure the chaining works correctly
+        expect(katanaDojo.warrior.weaponLength()).eql("long", "katanaDojo.warrior weapon length not 'long'");
+        // test anyAncestorNamed again
+        expect(wakizashiDojo.warrior.weaponLength()).eql("short", "wakizashiDojo.warrior weapon length not 'short'");
+
+        // Katana is bound transient (default), so two katanas will have different fight() values
+        expect(katanaDojo.warrior.fight()).not.eql(ninjaDefault.fight());
+
+        // Wakizashi's are more rare, so warriors have to share.
+        expect(wakizashiDojo.warrior.fight()).eql(ninjaShort.fight());
+        expect(wakizashiDojo.warrior.weapon === ninjaShort.weapon).eql(true);
+
 
     });
 
