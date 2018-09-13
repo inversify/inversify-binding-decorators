@@ -294,18 +294,17 @@ class Shuriken implements Weapon {
 }
 ```
 
-### Using @provideFluent multiple times
+### Using @fluentProvide multiple times
 
-If you try to apply `@provideFluent` multiple times:
+If you try to apply `@fluentProvide` multiple times:
 
 ```ts
 let container = new Container();
-let provideFluent = fluentProvide(container);
 
 const provideSingleton = (identifier: any) => {
-    return provideFluent(identifier)
-    .inSingletonScope()
-    .done();
+    return fluentProvide(identifier)
+        .inSingletonScope()
+        .done();
 };
 
 function shouldThrow() {
@@ -318,7 +317,7 @@ function shouldThrow() {
 
 The library will throw an exception:
 
-> Cannot apply @provideFluent decorator multiple times but is has been used multiple times in Ninja Please use done(true) if you are trying to declare multiple bindings!
+> Cannot apply @fluentProvide decorator multiple times but is has been used multiple times in Ninja Please use done(true) if you are trying to declare multiple bindings!
 
 We throw an exception to ensure that you are are not trying to apply `@fluentProvide` multiple times by mistake.
 
@@ -327,7 +326,7 @@ You can overcome this by passing the `force` argument to `done()`:
 ```ts
 
 const provideSingleton = (identifier: any) => {
-    return provideFluent(identifier)
+    return fluentProvide(identifier)
     .inSingletonScope()
     .done(true); // IMPORTANT!
 };
