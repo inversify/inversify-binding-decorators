@@ -26,7 +26,7 @@ class ProvideDoneSyntax implements interfaces.ProvideDoneSyntax {
                     decorate(injectable(), target);
                 } catch (e) {
                     throw new Error(
-                        "Cannot apply @provideFluent decorator multiple times but is has been used " +
+                        "Cannot apply @fluentProvide decorator multiple times but is has been used " +
                         `multiple times in ${target.name} ` +
                         "Please use done(true) if you are trying to declare multiple bindings!"
                     );

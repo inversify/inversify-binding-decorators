@@ -37,7 +37,7 @@ describe("fluentProvide", () => {
         }
 
         expect(shouldThrow).to.throw(
-            "Cannot apply @provideFluent decorator multiple times but is has been used " +
+            "Cannot apply @fluentProvide decorator multiple times but is has been used " +
             "multiple times in Ninja " +
             "Please use done(true) if you are trying to declare multiple bindings!"
         );
