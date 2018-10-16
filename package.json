@@ -36,7 +36,7 @@
     "gulp-typescript": "4.0.2",
     "inversify": "4.13.0",
     "mocha": "5.2.0",
-    "publish-please": "4.0.0",
+    "publish-please": "4.0.1",
     "reflect-metadata": "0.1.12",
     "run-sequence": "2.2.1",
     "sinon": "6.0.1",
