@@ -4,12 +4,11 @@ import interfaces from "../interfaces/interfaces";
 import { METADATA_KEY } from "../constants";
 
 function provide(
-  serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any>,
+  serviceIdentifier?: inversifyInterfaces.ServiceIdentifier<any>,
   force?: boolean
 ) {
 
   return function (target: any) {
-
     const isAlreadyDecorated = Reflect.hasOwnMetadata(inversify_METADATA_KEY.PARAM_TYPES, target);
     const redecorateWithInject = force === true;
 
@@ -30,7 +29,8 @@ function provide(
     }
 
     const currentMetadata: interfaces.ProvideSyntax = {
-      constraint: (bind: inversifyInterfaces.Bind, bindTarget: any) => bind(serviceIdentifier).to(bindTarget),
+      constraint: (bind: inversifyInterfaces.Bind, bindTarget: any) =>
+        bind(serviceIdentifier || bindTarget).to(bindTarget),
       implementationType: target
     };
 
