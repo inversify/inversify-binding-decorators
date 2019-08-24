@@ -29,7 +29,7 @@ describe("provide", () => {
         class Ninja { }
         provide("Ninja")(Ninja);
         const bindingSpy = sandbox.spy();
-        const bindSpy = sandbox.spy(() => { return { to: bindingSpy }; });
+        const bindSpy: any = sandbox.spy(() => { return { to: bindingSpy }; });
 
         let bindingMetadata: interfaces.ProvideSyntax = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
         bindingMetadata.constraint(bindSpy, Ninja);
