@@ -44,23 +44,14 @@ describe("fluentProvide", () => {
 
     });
 
-    it("Should work if @provide is applied more than once with force flag", () => {
+    it("Should work if @fluentProvide is applied with no arguments", () => {
+      function shouldThrow() {
+        @fluentProvide().inSingletonScope().done()
+        class Ninja {}
+        return Ninja;
+      }
 
-        const provideSingleton = (identifier: any) => {
-            return fluentProvide(identifier)
-                .inSingletonScope()
-                .done(true); // IMPORTANT!
-        };
-
-        function shouldThrow() {
-            @provideSingleton("Ninja")
-            @provideSingleton("SilentNinja")
-            class Ninja { }
-            return Ninja;
-        }
-
-        expect(shouldThrow).not.to.throw();
-
+      expect(shouldThrow).not.to.throw();
     });
 
 });

@@ -6,9 +6,8 @@ import ProvideDoneSyntax from "../syntax/provide_done_syntax";
 import interfaces from "../interfaces/interfaces";
 import { interfaces as inversifyInterfaces } from "inversify";
 
-function fluentProvide(serviceIdentifier: inversifyInterfaces.ServiceIdentifier<any>) {
-
-  let bindingWhenOnSyntax = (bind: inversifyInterfaces.Bind, target: any) => bind<any>(serviceIdentifier).to(target);
+function fluentProvide(serviceIdentifier?: inversifyInterfaces.ServiceIdentifier<any>) {
+  let bindingWhenOnSyntax = (bind: inversifyInterfaces.Bind, target: any) => bind<any>(serviceIdentifier || target).to(target);
   let bindingConstraintFunction = (bind: inversifyInterfaces.Bind, target: any) => (<any>bindingWhenOnSyntax(bind, target))._binding;
   let provideDoneSyntax = new ProvideDoneSyntax(bindingConstraintFunction);
 

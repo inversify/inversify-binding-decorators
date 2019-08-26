@@ -131,6 +131,51 @@ describe("inversify-binding-decorators", () => {
 
     });
 
+    it("Should be able to declare bindings using classes as identifiers on empty provide arguments", () => {
+      let container = new Container();
+
+      @provide()
+      class Katana {
+        public hit() {
+          return "cut!";
+        }
+      }
+
+      @provide()
+      class Shuriken {
+        public throw() {
+          return "hit!";
+        }
+      }
+
+      @provide()
+      class Ninja {
+        public katana: Katana;
+        public shuriken: Shuriken;
+
+        public constructor(katana: Katana, shuriken: Shuriken) {
+          this.katana = katana;
+          this.shuriken = shuriken;
+        }
+
+        public fight() {
+          return this.katana.hit();
+        }
+        public sneak() {
+          return this.shuriken.throw();
+        }
+      }
+
+      container.load(buildProviderModule());
+      let ninja = container.get<Ninja>(Ninja);
+
+      expect(ninja instanceof Ninja).eql(true);
+      expect(ninja.katana instanceof Katana).eql(true);
+      expect(ninja.shuriken instanceof Shuriken).eql(true);
+      expect(ninja.fight()).eql("cut!");
+      expect(ninja.sneak()).eql("hit!");
+    });
+
     it("Should be able to declare bindings using symbols as identifiers", () => {
 
         let container = new Container();
@@ -480,6 +525,51 @@ describe("inversify-binding-decorators", () => {
         expect(wakizashiDojo.warrior.weapon === ninjaShort.weapon).eql(true);
 
 
+    });
+
+    it("Should be able to declare bindings using classes as identifiers on empty provide arguments", () => {
+      let container = new Container();
+
+      @fluentProvide().inSingletonScope().done()
+      class Katana {
+        public hit() {
+          return "cut!";
+        }
+      }
+
+      @fluentProvide().inSingletonScope().done()
+      class Shuriken {
+        public throw() {
+          return "hit!";
+        }
+      }
+
+      @provide()
+      class Ninja {
+        public katana: Katana;
+        public shuriken: Shuriken;
+
+        public constructor(katana: Katana, shuriken: Shuriken) {
+          this.katana = katana;
+          this.shuriken = shuriken;
+        }
+
+        public fight() {
+          return this.katana.hit();
+        }
+        public sneak() {
+          return this.shuriken.throw();
+        }
+      }
+
+      container.load(buildProviderModule());
+      let ninja = container.get<Ninja>(Ninja);
+
+      expect(ninja instanceof Ninja).eql(true);
+      expect(ninja.katana instanceof Katana).eql(true);
+      expect(ninja.shuriken instanceof Shuriken).eql(true);
+      expect(ninja.fight()).eql("cut!");
+      expect(ninja.sneak()).eql("hit!");
     });
 
 });
