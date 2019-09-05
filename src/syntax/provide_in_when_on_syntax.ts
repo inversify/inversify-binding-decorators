@@ -81,6 +81,10 @@ class ProvideInWhenOnSyntax<T> implements interfaces.ProvideInWhenOnSyntax<T>  {
         return this._provideInSyntax.inSingletonScope();
     }
 
+    public inRequestScope(): interfaces.ProvideWhenOnSyntax<T> {
+        return this._provideInSyntax.inRequestScope();
+    }
+
     public inTransientScope(): interfaces.ProvideWhenOnSyntax<T> {
         return this._provideInSyntax.inTransientScope();
     }

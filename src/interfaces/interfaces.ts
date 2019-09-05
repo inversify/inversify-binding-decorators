@@ -15,6 +15,7 @@ namespace interfaces {
 
     export interface ProvideInSyntax<T> extends ProvideDoneSyntax {
         inSingletonScope(): ProvideWhenOnSyntax<T>;
+        inRequestScope(): ProvideWhenOnSyntax<T>;
         inTransientScope(): ProvideWhenOnSyntax<T>;
     }
 

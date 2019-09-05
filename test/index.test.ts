@@ -208,6 +208,10 @@ describe("inversify-binding-decorators", () => {
             return fluentProvide(identifier).inSingletonScope().done();
         };
 
+        let provideRequest = function (identifier: string) {
+            return fluentProvide(identifier).inRequestScope().done();
+        };
+
         let provideTransient = function (identifier: string) {
             return fluentProvide(identifier).inTransientScope().done();
         };
@@ -244,7 +248,7 @@ describe("inversify-binding-decorators", () => {
             }
         }
 
-        @provideTransient(TYPE.ThrowableWeapon)
+        @provideRequest(TYPE.ThrowableWeapon)
         class Shuriken implements ThrowableWeapon {
             private _mark: any;
             public constructor() {
