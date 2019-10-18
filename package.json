@@ -35,7 +35,7 @@
     "gulp-tslint": "8.1.4",
     "gulp-typescript": "5.0.1",
     "inversify": "5.0.1",
-    "mocha": "6.2.0",
+    "mocha": "6.2.2",
     "publish-please": "5.5.1",
     "reflect-metadata": "0.1.13",
     "run-sequence": "2.2.1",
