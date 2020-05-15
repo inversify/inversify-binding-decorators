@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/chai": "4.2.0",
     "@types/mocha": "5.2.7",
-    "@types/sinon": "7.0.13",
+    "@types/sinon": "9.0.1",
     "chai": "4.2.0",
     "gulp": "4.0.2",
     "gulp-istanbul": "1.1.3",
