@@ -281,9 +281,9 @@ Another example:
 
 ```ts
 let provideSingleton = function(identifier) {
-	return provide(identifier)
-		      .inSingletonScope()
-		      .done();
+	return fluentProvide(identifier)
+	      .inSingletonScope()
+	      .done();
 };
 
 @provideSingleton(TYPE.Weapon)
