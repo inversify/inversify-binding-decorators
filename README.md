@@ -349,11 +349,11 @@ the public properties of a module:
 Consider the following example:
 
 ```ts
-import * as entites from "../entities";
+import * as entities from "../entities";
 
 let container = new Container();
-autoProvide(container, entites);
-let warrior = container.get(entites.Warrior);
+autoProvide(container, entities);
+let warrior = container.get(entities.Warrior);
 expect(warrior.fight()).eql("Using Katana...");
 ```
 
@@ -386,8 +386,8 @@ class Warrior {
     private _weapon: Weapon;
     public constructor(
         // we need to declare binding because auto-provide uses
-        // @injectbale decorator at runtime not compilation time
-        // in the future maybe this limitation will desapear
+        // @injectable decorator at runtime not compilation time
+        // in the future maybe this limitation will disappear
         // thanks to design-time decorators or some other TS feature
         @inject(Katana) weapon: Weapon
     ) {
