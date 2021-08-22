@@ -27,7 +27,7 @@ The `inversify-binding-decorators` type definitions are included in the npm modu
 Please refer to the [InversifyJS documentation](https://github.com/inversify/InversifyJS#installation) to learn more about the installation process.
 
 ### The basics
-The [InversifyJS](http://inversify.io/) API allows us to delcare bindings using a fluent API: 
+The [InversifyJS](http://inversify.io/) API allows us to declare bindings using a fluent API: 
 
 ```ts
 import { injectable, Container } from "inversify";
