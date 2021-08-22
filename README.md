@@ -280,10 +280,10 @@ class Shuriken implements Weapon {
 Another example:
 
 ```ts
-let provideSingleton = function(identifier) {
-	return provide(identifier)
-		      .inSingletonScope()
-		      .done();
+const provideSingleton = (identifier: any) => {
+    return fluentProvide(identifier)
+        .inSingletonScope()
+        .done();
 };
 
 @provideSingleton(TYPE.Weapon)
