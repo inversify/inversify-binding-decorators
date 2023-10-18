@@ -65,4 +65,27 @@ describe("ProvideInSyntax", () => {
         expect(mockBind.calledWith("Ninja")).to.be.eql(true, "mock bind was not called");
 
     });
+    it("Should be able to declare a binding with request scope", () => {
+
+        class Ninja { }
+        let inRequestScopeExpectation = sinon.expectation.create("inRequestScope");
+        let mockBindingInSyntax = { inRequestScope: inRequestScopeExpectation } as any as inversifyInterfaces.BindingInSyntax<any>;
+        let mockBind = sinon.expectation.create("bind");
+        let bindingInSyntaxFunction =
+            (bind: inversifyInterfaces.Bind, target: any) => {
+                bind<Ninja>("Ninja");
+                return mockBindingInSyntax;
+            };
+        let binding: inversifyInterfaces.Binding<any> = (<any>bindingInSyntaxFunction)._binding;
+        let provideDoneSyntax = new ProvideDoneSyntax(binding as any);
+
+        let provideInSyntax = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
+
+        provideInSyntax.inRequestScope().done()(Ninja);
+        let metadata = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
+        metadata.constraint(mockBind);
+        expect(inRequestScopeExpectation.calledOnce).to.eql(true, "inRequestScope was not called exactly once");
+        expect(mockBind.calledWith("Ninja")).to.be.eql(true, "mock bind was not called");
+
+    });
 });

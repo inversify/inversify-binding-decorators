@@ -36,6 +36,15 @@ class ProvideInSyntax<T> implements interfaces.ProvideInSyntax<T> {
         return new ProvideWhenOnSyntax(provideWhenSyntax, provideOnSyntax);
     }
 
+    public inRequestScope(): interfaces.ProvideWhenOnSyntax<T> {
+        let bindingWhenOnSyntax = (bind: inversifyInterfaces.Bind, target: any) => this._bindingInSyntax(bind, target).inRequestScope();
+        let inDoneSyntax = new ProvideDoneSyntax(bindingWhenOnSyntax);
+
+        let provideWhenSyntax = new ProvideWhenSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
+        let provideOnSyntax = new ProvideOnSyntax<T>(bindingWhenOnSyntax, inDoneSyntax);
+        return new ProvideWhenOnSyntax(provideWhenSyntax, provideOnSyntax);
+    }
+
     public done(force?: boolean) {
         return this._provideDoneSyntax.done(force);
     }
