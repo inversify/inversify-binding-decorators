@@ -19,50 +19,29 @@ describe("ProvideInSyntax", () => {
         sandbox.restore();
     });
 
-    it("Should be able to declare a binding with singleton scope", () => {
+    ["inSingletonScope", "inRequestScope", "inTransientScope"].forEach(scope => {
+        it(`Should be able to declare a binding with ${scope} scope`, () => {
 
-        class Ninja { }
-        let inSingletonScopeExpectation = sinon.expectation.create("inSingletonScope");
-        let mockBindingInSyntax = { inSingletonScope: inSingletonScopeExpectation } as any as inversifyInterfaces.BindingInSyntax<any>;
-        let mockBind = sinon.expectation.create("bind");
-        let bindingInSyntaxFunction =
-            (bind: inversifyInterfaces.Bind, target: any) => {
-                bind<Ninja>("Ninja");
-                return mockBindingInSyntax;
-            };
-        let binding: inversifyInterfaces.Binding<any> = (<any>bindingInSyntaxFunction)._binding;
-        let provideDoneSyntax = new ProvideDoneSyntax(binding as any);
+            class Ninja { }
+            let inScopeExpectation = sinon.expectation.create(scope);
+            let mockBindingInSyntax = { [scope]: inScopeExpectation } as any as inversifyInterfaces.BindingInSyntax<any>;
+            let mockBind = sinon.expectation.create("bind");
+            let bindingInSyntaxFunction =
+                (bind: inversifyInterfaces.Bind, target: any) => {
+                    bind<Ninja>("Ninja");
+                    return mockBindingInSyntax;
+                };
+            let binding: inversifyInterfaces.Binding<any> = (<any>bindingInSyntaxFunction)._binding;
+            let provideDoneSyntax = new ProvideDoneSyntax(binding as any);
 
-        let provideInSyntax = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
+            let provideInSyntax: {[scope: string]: any} = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
 
-        provideInSyntax.inSingletonScope().done()(Ninja);
-        let metadata = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
-        metadata.constraint(mockBind);
-        expect(inSingletonScopeExpectation.calledOnce).to.eql(true, "inSingletonScope was not called exactly once");
-        expect(mockBind.calledWith("Ninja")).to.be.eql(true, "mock bind was not called");
+            provideInSyntax[scope]().done()(Ninja);
+            let metadata = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
+            metadata.constraint(mockBind);
+            expect(inScopeExpectation.calledOnce).to.eql(true, `${scope} was not called exactly once`);
+            expect(mockBind.calledWith("Ninja")).to.be.eql(true, "mock bind was not called");
 
-    });
-    it("Should be able to declare a binding with transient scope", () => {
-
-        class Ninja { }
-        let inTransientScopeExpectation = sinon.expectation.create("inTransientScope");
-        let mockBindingInSyntax = { inTransientScope: inTransientScopeExpectation } as any as inversifyInterfaces.BindingInSyntax<any>;
-        let mockBind = sinon.expectation.create("bind");
-        let bindingInSyntaxFunction =
-            (bind: inversifyInterfaces.Bind, target: any) => {
-                bind<Ninja>("Ninja");
-                return mockBindingInSyntax;
-            };
-        let binding: inversifyInterfaces.Binding<any> = (<any>bindingInSyntaxFunction)._binding;
-        let provideDoneSyntax = new ProvideDoneSyntax(binding as any);
-
-        let provideInSyntax = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
-
-        provideInSyntax.inTransientScope().done()(Ninja);
-        let metadata = Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0];
-        metadata.constraint(mockBind);
-        expect(inTransientScopeExpectation.calledOnce).to.eql(true, "inTransientScope was not called exactly once");
-        expect(mockBind.calledWith("Ninja")).to.be.eql(true, "mock bind was not called");
-
+        });
     });
 });
