@@ -1,16 +1,9 @@
 # inversify-binding-decorators
 
-[![Join the chat at https://gitter.im/inversify/InversifyJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/inversify/InversifyJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://secure.travis-ci.org/inversify/inversify-binding-decorators.svg?branch=master)](https://travis-ci.org/inversify/inversify-binding-decorators)
-[![Test Coverage](https://codeclimate.com/github/inversify/inversify-binding-decorators/badges/coverage.svg)](https://codeclimate.com/github/inversify/inversify-binding-decorators/coverage)
 [![npm version](https://badge.fury.io/js/inversify-binding-decorators.svg)](http://badge.fury.io/js/inversify-binding-decorators)
-[![Dependencies](https://david-dm.org/inversify/inversify-binding-decorators.svg)](https://david-dm.org/inversify/inversify-binding-decorators#info=dependencies)
-[![img](https://david-dm.org/inversify/inversify-binding-decorators/dev-status.svg)](https://david-dm.org/inversify/inversify-binding-decorators/#info=devDependencies)
-[![img](https://david-dm.org/inversify/inversify-binding-decorators/peer-status.svg)](https://david-dm.org/inversify/inversify-binding-decorators/#info=peerDependenciess)
-[![Known Vulnerabilities](https://snyk.io/test/github/inversify/inversify-binding-decorators/badge.svg)](https://snyk.io/test/github/inversify/inversify-binding-decorators)
 
-[![NPM](https://nodei.co/npm/inversify-binding-decorators.png?downloads=true&downloadRank=true)](https://nodei.co/npm/inversify-binding-decorators/)
-[![NPM](https://nodei.co/npm-dl/inversify-binding-decorators.png?months=9&height=3)](https://nodei.co/npm/inversify-binding-decorators/)
+> [!WARNING]
+> This repository is deprecated. Current binding decorators are implemented in the [monorepo](https://github.com/inversify/monorepo) and documented [here](https://inversify.io/binding-decorators/)
 
 An utility that allows developers to declare [InversifyJS](http://inversify.io/) bindings using ES2016 decorators:
 
