@@ -212,11 +212,17 @@ describe("inversify-binding-decorators", () => {
             return fluentProvide(identifier).inTransientScope().done();
         };
 
+        let provideRequest = function (identifier: string) {
+            return fluentProvide(identifier).inRequestScope().done();
+        };
+
         interface Warrior {
             katana: Weapon;
             shuriken: ThrowableWeapon;
+            personalItem: PersonalItem;
             fight(): string;
             sneak(): string;
+            use(): string;
         }
 
         interface Weapon {
@@ -227,7 +233,12 @@ describe("inversify-binding-decorators", () => {
             throw(): string;
         }
 
+        interface PersonalItem {
+            use(): string;
+        }
+
         let TYPE = {
+            PersonalItem: "PersonalItem",
             ThrowableWeapon: "ThrowableWeapon",
             Warrior: "Warrior",
             Weapon: "Weapon"
@@ -255,22 +266,37 @@ describe("inversify-binding-decorators", () => {
             }
         }
 
+        @provideRequest(TYPE.PersonalItem)
+        class FamilyCrest implements PersonalItem {
+            private _mark: any;
+            public constructor() {
+                this._mark = Math.random();
+            }
+            public use() {
+                return "use! " + this._mark;
+            }
+        }
+
         @provideTransient(TYPE.Warrior)
         class Ninja implements Warrior {
 
             public katana: Weapon;
             public shuriken: ThrowableWeapon;
+            public personalItem: PersonalItem;
 
             public constructor(
                 @inject(TYPE.Weapon) katana: Weapon,
-                @inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon
+                @inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon,
+                @inject(TYPE.PersonalItem) personalItem: PersonalItem
             ) {
                 this.katana = katana;
                 this.shuriken = shuriken;
+                this.personalItem = personalItem;
             }
 
             public fight() { return this.katana.hit(); }
             public sneak() { return this.shuriken.throw(); }
+            public use() { return this.personalItem.use(); }
 
         }
 
@@ -279,13 +305,16 @@ describe("inversify-binding-decorators", () => {
         expect(ninja instanceof Ninja).eql(true);
         expect(ninja.katana instanceof Katana).eql(true);
         expect(ninja.shuriken instanceof Shuriken).eql(true);
+        expect(ninja.personalItem instanceof FamilyCrest).eql(true);
 
         expect(ninja.fight().indexOf("cut!")).eql(0);
         expect(ninja.sneak().indexOf("hit!")).eql(0);
+        expect(ninja.use().indexOf("use!")).eql(0);
 
         let ninja2 = container.get<Warrior>(TYPE.Warrior);
         expect(ninja.fight()).eql(ninja2.fight());
         expect(ninja.sneak()).not.to.eql(ninja2.sneak());
+        expect(ninja.use()).not.to.eql(ninja2.use());
 
     });
 
